@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>senior project | Home</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://kit.fontawesome.com/e18a3893e1.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    </head>
+
+    <body>
+        <div class="bg-gradient-to-br from-cyan-100 to-red-100 min-h-screen">
+            <div class="relative bg-[#47a6ab] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl sm:px-10">
+                <p class="ml-4 text-white text-2xl font-bold">Planning your time</p>
+                <p class="ml-4 text-white text-sm pt-2 pb-2 font-normal">Please enter your destination</p>
+                <div class="relative bg-[rgb(256,256,256,0.47)] px-6 pt-3 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 space-y-3">
+                    <div class="grid grid-cols-8 gap-1">
+                        <div class="col-start-1 col-span-4">
+                            <a class="text-white font-thin hover:font-normal focus:font-normal">One-Way</a>
+                            <a class="text-white">  |  </a>
+                            <a class="text-white font-thin hover:font-normal focus:font-normal">Round Trip</a>
+                        </div>
+                        <div class="col-end-9 col-span-1 justify-end">
+                            <button class="fa-regular fa-map text-white text-2xl hover:font-semibold focus:font-bold" onclick="window.location='map/'"></button>
+                        </div>
+                    </div>
+                    <div class="relative bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
+                        <i class="fa-solid fa-circle pr-3 text-[#47a6ab]"></i>
+                        <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser" name="origin">
+                            {% for x in location_data %}
+                            <option class="truncate" value="{{ x.name }}">{{ x.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="relative bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
+                        <i class="fa-solid fa-location-dot pl-0.5 pr-3.5 text-[#FF370D]"></i>
+                        <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser" name="destination">
+                            {% for x in location_data %}
+                            <option class="truncate" value="{{ x.name }}">{{ x.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="relative bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
+                        <i class="fa-regular fa-calendar pl-0.5 pr-3.5 text-[#FFD816]"></i>
+                        <a class="text-sm">Today, Now.</a>
+                    </div>
+                    <button class="flex bg-black text-white justify-stretch px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B]">
+                        Next
+                    </button>
+                </div>
+            </div>
+            <div class="relative bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 space-y-3">
+                <div class="grid grid-cols-5 gap-1">
+                    <p class="grid col-start-1 col-span-5 ml-4 text-xl">Recent planning</p>
+                    <a class="grid col-end-8 col-span-1 mr-2 mt-1 text-sm text-[#4b88e3] hover:text-[rgb(35,106,247)]" href="recent/">See all</a>
+                </div>
+                <div class="relative bg-[#e8f8fb] px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10">
+                    <a>
+                        <p class="text-right text-[11px]">
+                            {{ last_data.timestamp }}
+                        </p>
+                        <i class="fa-solid fa-circle pr-3 text-[#47a6ab]"></i>
+                        <a class="text-sm ml-3">
+                            {{ last_data.origin_name }}
+                        </a>
+                        <br>
+                        <i class="fa-solid fa-angles-down ml-0.49 text-[#8c8c8c]"></i>
+                        <br>
+                        <i class="fa-solid fa-location-dot pl-0.5 pr-3.5 text-[#FF370D]"></i>
+                        <a class="text-sm ml-3">
+                            {{ last_data.destin_name }}
+                        </a>
+                    </a>
+                </div>
+                <p class="ml-4 text-xl pt-10">Saved place</p>
+                <div class="flex justify-evenly">
+                    <a class="fa-solid fa-house-chimney px-4 text-[48px] text-[#56a49a] hover:text-[#47a6ab]" href="soon/"></a>
+                    <a class="fa-solid fa-briefcase px-4 text-[48px] text-[#56a49a] hover:text-[#47a6ab]" href="soon/"></a>
+                    <a class="fa-solid fa-bookmark px-4 text-[48px] text-[#56a49a] hover:text-[#47a6ab]" href="soon/"></a>
+                </div>
+                <div>
+                    
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

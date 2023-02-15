@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Add member</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+    <h1>Add member</h1>
+    <form action="addrecord/" method="post">
+        {% csrf_token %}
+        First Name:
+        <br>
+        <input type="text" name="first">
+        <br><br>
+        Last name:
+        <br>
+        <input type="text" name="last">
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

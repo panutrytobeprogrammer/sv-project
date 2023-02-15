@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>senior project | Map</title>
+        <style type="text/css">
+            html{
+              height:100%;
+            }
+            body{
+              margin:0px;
+              height:100%;
+            }
+            #map {
+              height: 100%;
+              width: 100%;
+            }
+        </style>
+        <script src="https://api.longdo.com/map/?key=3591015ec2722fad511c21639251c17f"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://kit.fontawesome.com/e18a3893e1.js" crossorigin="anonymous"></script>
+        <script>
+            var map;
+            function init() {
+            map = new longdo.Map({
+              placeholder: document.getElementById('map')
+            });
+          }
+        </script>
+    </head>
+    <body onload="init();" class="bg-gradient-to-br from-cyan-100 to-red-100 min-h-screen"> 
+        <div class="relative bg-[#47a6ab] min-h-screen shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl" id="map">
+          <button class="ml-4 p-5 fa-solid fa-circle-chevron-left text-[#002564] text-[36px] hover:text-[#00000]" onclick="window.location='indexv1.html'"></button>
+        </div>
+    </body>
+</html>
+

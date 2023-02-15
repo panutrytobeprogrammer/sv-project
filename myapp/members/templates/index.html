@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+</head>
+<body>
+    <h1>This is test template</h1>
+    <p>eiei huakuay</p>
+    <hr>
+    <h3>Members</h3>
+    <table border="1">
+        {% for x in mymembers %}
+        <tr>
+            <td><a href="update/{{ x.id }}">{{ x.id }}</a></td>
+            <td>{{ x.firstname }}</td>
+            <td>{{ x.lastname }}</td>
+            <td>
+                <a href="delete/{{ x.id }}">delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p>
+        <a href="add/">Add member</a>
+    </p>
+</body>
+</html>
