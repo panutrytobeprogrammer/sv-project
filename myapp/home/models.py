@@ -10,6 +10,12 @@ class Recentplan(models.Model):
     timestamp = models.DateTimeField()
 
 class location(models.Model):
-    location_id = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     geometry = models.CharField(max_length=255)
+
+class Location_time(models.Model):
+    pass
+
+class Appoint_default(models.Model):
+    name = models.CharField(max_length=255)
+    default_time = models.IntegerField()

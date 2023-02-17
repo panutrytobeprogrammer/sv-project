@@ -23,29 +23,30 @@
                             <button class="fa-regular fa-map text-white text-2xl hover:font-semibold focus:font-bold" onclick="window.location='map/'"></button>
                         </div>
                     </div>
-                    <div class="relative bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
-                        <i class="fa-solid fa-circle pr-3 text-[#47a6ab]"></i>
-                        <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser" name="origin">
-                            {% for x in location_data %}
-                            <option class="truncate" value="{{ x.name }}">{{ x.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="relative bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
-                        <i class="fa-solid fa-location-dot pl-0.5 pr-3.5 text-[#FF370D]"></i>
-                        <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser" name="destination">
-                            {% for x in location_data %}
-                            <option class="truncate" value="{{ x.name }}">{{ x.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="relative bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
-                        <i class="fa-regular fa-calendar pl-0.5 pr-3.5 text-[#FFD816]"></i>
-                        <a class="text-sm">Today, Now.</a>
-                    </div>
-                    <button class="flex bg-black text-white justify-stretch px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B]">
-                        Next
-                    </button>
+                    <form action="planning/" method="post" class="space-y-3">
+                        {% csrf_token %}
+                        <div class="relative bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
+                            <i class="fa-solid fa-circle pr-3 text-[#47a6ab]"></i>
+                            <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser" name="origin_plan">
+                                {% for x in location_data %}
+                                <option class="truncate" value="{{ x.name }}">{{ x.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="relative bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
+                            <i class="fa-solid fa-location-dot pl-0.5 pr-3.5 text-[#FF370D]"></i>
+                            <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser" name="destination_plan">
+                                {% for x in location_data %}
+                                <option class="truncate" value="{{ x.name }}">{{ x.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="relative bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
+                            <i class="fa-regular fa-calendar pl-0.5 pr-3.5 text-[#FFD816]"></i>
+                            <a class="text-sm">Today, Now.</a>
+                        </div>
+                        <input type="submit" value="Next" class="flex bg-black text-white justify-stretch px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">
+                    </form>    
                 </div>
             </div>
             <div class="relative bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 space-y-3">

@@ -21,7 +21,7 @@
           width: 100%;
         }
     </style>
-    <script src="https://api.longdo.com/map/?key=3591015ec2722fad511c21639251c17f"></script>
+    <!-- <script src="https://api.longdo.com/map/?key=3591015ec2722fad511c21639251c17f"></script> -->
     <script>
         var map;
         function init() {
@@ -32,10 +32,47 @@
     </script>
 </head>
 <body>
-    <body onload="init();" class="bg-gradient-to-br from-cyan-100 to-red-100 min-h-screen"> 
-        <div class="relative bg-[#47a6ab] min-h-screen shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl" id="map">
-            <button class="ml-4 p-5 fa-solid fa-circle-chevron-left text-[#002564] text-[36px] hover:text-[#00000]" onclick="window.location='indexv1.html'"></button>
+    <body onload="init();"> 
+      <div class="bg-gradient-to-br from-cyan-100 to-red-100 min-h-screen">
+        <div class="relative bg-[#47a6ab] h-100 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl" id="map">
+            <a class="ml-4 p-5 fa-solid fa-circle-chevron-left text-[rgb(255,255,255,0.82)] text-[36px] hover:text-[#00000]" href="../"></a>
         </div>
+        <div class="relative bg-[#fff] pt-10 pb-10 pl-5 pr-5 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl">
+          <br>
+          <div class="grid grid-cols-3 gap-1">
+            <p class="col-start-1 text-2xl text-right">10:00</p>
+            <div class="relative bg-[#47a6ab] py-2 px-5 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
+              <p class="col-start-2 text-sm text-justify text-white align-text-bottom">{{ time }} mins</p>
+            </div>
+            <p class="col-start-3 text-2xl text-left">10:00</p>
+          </div>
+          <br>
+          <p class="text-center text-m font-light">{{ origin_name }} to {{ destin_name }}</p>
+          <br>
+          <form action="visualize/" method="post" class="space-y-3">
+            {% csrf_token %}
+            <div class="relative bg-[rgb(71,166,171,0.18)] pt-5 pb-10 px-6 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
+              <p class="font-semibold text-m">Your appointment</p>
+              <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser" name="appointment">
+                {% for x in default_time %}
+                <option class="truncate" value="{{ x.default_time }}">{{ x.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <br>
+            <div class="relative bg-[rgb(71,166,171,0.18)] pt-5 pb-10 px-6 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
+              <p class="font-semibold text-m">Important percentage</p>
+              <!-- <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser" name="appointment">
+                {% for x in location_data %}
+                <option class="truncate" value="{{ x.name }}">{{ x.name }}</option>
+                {% endfor %}
+              </select> -->
+            </div>
+            <br><br>
+            <input type="submit" value="Next" class="flex bg-black text-white justify-stretch px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">
+          </form>
+        </div>
+      </div>
     </body>
 </body>
 </html>
