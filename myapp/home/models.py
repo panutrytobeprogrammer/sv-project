@@ -7,6 +7,7 @@ class Recentplan(models.Model):
     origin_pos = models.CharField(max_length=255)
     destin_name = models.CharField(max_length=255)
     destin_pos = models.CharField(max_length=255)
+    avg_time = models.PositiveIntegerField()
     timestamp = models.DateTimeField()
 
 class location(models.Model):
@@ -19,3 +20,11 @@ class Location_time(models.Model):
 class Appoint_default(models.Model):
     name = models.CharField(max_length=255)
     default_time = models.IntegerField()
+
+class planning_to_visualize(models.Model):
+    origin_name = models.CharField(max_length=255)
+    destin_name = models.CharField(max_length=255)
+    avg_time = models.PositiveIntegerField()
+    percent = models.PositiveIntegerField()
+    pie_chart = models.ImageField()
+    bar_chart = models.ImageField()

@@ -1,5 +1,9 @@
 import datetime
+import matplotlib
+matplotlib.use('Agg')
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
 def index_time(time, percent):
     pass
@@ -19,6 +23,8 @@ def s_name(name):
     return text
 
 def query_time(route, dt):
+    if route[0:2] == route[3:]:
+        return 0
     line = {
         'sm_ch': ['แยกสามย่าน', 'แยกอังรีดูนังค์', 'แยกศาลาแดง'],
         'sm_lp': ['แยกสามย่าน', 'แยกอังรีดูนังค์', 'แยกศาลาแดง', 'แยกราชดำริ'],
@@ -40,12 +46,45 @@ def query_time(route, dt):
     dt = pd.to_datetime(dt)
     day = diff(dt.date())
 
-    ptime = 0
+    avg_time = 0    # buffer index = 0%
+    plan_time = 0   # buffer index = 100% (95th percentile)
+
     a = line[route]
     for i in range(len(a)-1):
         temp = df[(df['from']==a[i]) & (df['end']==a[i+1]) & (df['days']==day) & (df['time']==time)]
-        ptime += temp['Planningtime'].mean()
-
-    return ptime
+        # ptime += temp['Planningtime'].mean() + 180 # planning time (95th percentile)
+        avg_time += temp['average traveltime'].mean() + 180 # +180 คือบวกไฟแดงละ 3 นาที
+        plan_time += temp['Planningtime']
+    if avg_time == np.nan:
+        return 0
+    return [avg_time/60, plan_time]
 
 # print(round(float(query_time('sm_qs'))))
+
+def query_visual_tti(day, time):
+    df = pd.read_csv('home/df_varandma.csv')
+    df = df.query(f'days == "{day}" and time == "{time}"')
+    return df.head()
+
+
+def buffer_index(time, percent):
+    return (percent/100)*time
+
+def value_pie(pct, all_val):
+    absolute = int((pct/100)*all_val)
+    return f'{absolute:d} min'
+
+
+def pie_chart(time, percent, filename):
+    buffer = buffer_index(time, percent)
+    data = [time, buffer]
+    color = ['#47A6AB', '#E54450']
+    explode = (0.01, 0.01)
+    plt.pie(data, colors=color, explode=explode, labels=['Average', 'Extra'], 
+            autopct=lambda pct: value_pie(pct, time+buffer), pctdistance=0.85)
+    center_circle = plt.Circle((0, 0), 0.7, fc='white')
+    fig = plt.gcf()
+    fig.gca().add_artist(center_circle)
+    plt.savefig(f'home/chart_img/pie_({filename}).png')
+    # plt.show()
+    plt.close()

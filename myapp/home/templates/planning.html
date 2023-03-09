@@ -40,24 +40,34 @@
         <div class="relative bg-[#fff] pt-10 pb-10 pl-5 pr-5 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl">
           <br>
           <div class="grid grid-cols-3 gap-1">
-            <p class="col-start-1 text-2xl text-right">10:00</p>
-            <div class="relative bg-[#47a6ab] py-2 px-5 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
+            <p class="col-start-1 text-2xl text-right">{{ now }}</p>
+            <div class="relative bg-[#47a6ab] py-2 px-5 shadow-lg ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
               <p class="col-start-2 text-sm text-justify text-white align-text-bottom">{{ time }} mins</p>
             </div>
-            <p class="col-start-3 text-2xl text-left">10:00</p>
+            <p class="col-start-3 text-2xl text-left">{{ arrv_time }}</p>
           </div>
           <br>
-          <p class="text-center text-m font-light">{{ origin_name }} to {{ destin_name }}</p>
+          <div class="flex justify-evenly">
+            <div class="relative bg-[#efefef] py-2 px-5 ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
+              <p class="text-m font-light">{{ origin_name }} to {{ destin_name }}</p>
+            </div>
+            <!-- <p><span id="demo"></span>Extra time</p> -->
+            <!-- <div class="relative bg-[#efefef] py-2 px-5 ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
+              <p class="text-m font-light">{{ destin_name }}</p>
+            </div> -->
+          </div>
           <br>
           <form action="visualize/" method="post" class="space-y-3">
             {% csrf_token %}
             <div class="relative bg-[rgb(71,166,171,0.18)] pt-5 pb-10 px-6 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
               <p class="font-semibold text-m">Your appointment</p>
-              <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser" name="appointment">
-                {% for x in default_time %}
-                <option class="truncate" value="{{ x.default_time }}">{{ x.name }}</option>
-                {% endfor %}
-              </select>
+              <div class="flex justify-center pt-5">
+                <select class="text-sm border-none bg-white sm:mx-auto px-32 py-4 rounded-xl" placeholder="Current Location" id="browser" name="appointment">
+                  {% for x in default_time %}
+                  <option class="truncate" value="{{ x.default_time }}">{{ x.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
             </div>
             <br>
             <div class="relative bg-[rgb(71,166,171,0.18)] pt-5 pb-10 px-6 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
@@ -67,12 +77,25 @@
                 <option class="truncate" value="{{ x.name }}">{{ x.name }}</option>
                 {% endfor %}
               </select> -->
+              <div class="flex justify-evenly slidecontainer pt-5">
+                <input type="range" min="1" max="100" value="50" class="slider" id="myRange" name="percentage">
+              </div>
+              <p class="text-center"><span id="demo"></span> %</p>
             </div>
             <br><br>
             <input type="submit" value="Next" class="flex bg-black text-white justify-stretch px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">
           </form>
         </div>
       </div>
+      <script>
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+        
+        slider.oninput = function() {
+          output.innerHTML = this.value;
+        }
+        </script>
     </body>
 </body>
 </html>
