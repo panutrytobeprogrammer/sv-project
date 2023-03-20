@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from .models import Recentplan, location, Appoint_default, planning_to_visualize
+from .models import Recentplan, location, Appoint_default, planning_to_visualize, Planning_temp
 from django.urls import reverse
 import datetime
 from .program_func import *
@@ -43,44 +43,68 @@ def planning(request):
 
     # query time
     plantime = pd.to_datetime(plantime)
-    # now = datetime.datetime.now() + datetime.timedelta(hours=7)
-    time = query_time(route=f'{origin_s}_{destin_s}', dt=plantime)[0]
-    time = round(float(time))
-    arrv_time = plantime + datetime.timedelta(minutes=time)
+    time = query_time(route=f'{origin_s}_{destin_s}', dt=plantime)
+    ff_time = time['ff_time']
+    avg_time = time['avg_time']
+    p95_time = time['p95_time']
+
+    dep_time_ff = plantime - datetime.timedelta(minutes=ff_time)
+    dep_time_avg = plantime - datetime.timedelta(minutes=avg_time)
+    dep_time_p95 = plantime - datetime.timedelta(minutes=p95_time)
 
     # get appointment time
-    default_time = Appoint_default.objects.all().values()
+    # default_time = Appoint_default.objects.all().values()
+
+    # save to planning temp table
+    Planning_temp(plantype='Fasten', og=origin_name, start=dep_time_ff, ds=destin_name, arrv=plantime, traveltime=ff_time).save()
+    Planning_temp(plantype='Most popular', og=origin_name, start=dep_time_avg, ds=destin_name, arrv=plantime, traveltime=avg_time).save()
+    Planning_temp(plantype='Suggested', og=origin_name, start=dep_time_p95, ds=destin_name, arrv=plantime, traveltime=p95_time).save()
+    
+    dep_time = Planning_temp.objects.all().order_by('-id')
 
     context = {
         'origin_name':origin_name,
         'destin_name':destin_name,
         'time':time,
         'now':plantime.strftime('%H:%M'),
-        'default_time':default_time,
-        'arrv_time':arrv_time.strftime('%H:%M'),
+        # 'default_time':default_time,
+        'dep_time_ff':dep_time_ff.strftime('%H:%M'),
+        'dep_time_avg':dep_time_avg.strftime('%H:%M'),
+        'dep_time_p95':dep_time_p95.strftime('%H:%M'),
+        'dep_time': dep_time
     }
-    add_recent_record(origin_name, destin_name, time, plantime)
     return HttpResponse(template.render(context, request))
 
-def visualize(request):
-    impt_percent = request.POST['percentage']
+def visualize(request, plantype):
+    # impt_percent = request.POST['percentage']
     template = loader.get_template('visualize.html')
-    # plan_time = query_time()[1]
-    # df = query_visual_tti('monday', '8:00:00')
+    # # plan_time = query_time()[1]
+    # # df = query_visual_tti('monday', '8:00:00')
 
-    lastplan = Recentplan.objects.last()
+    # lastplan = Recentplan.objects.last()
 
-    # test plt show
-    filename = f'{datetime.datetime.now()}'
-    pie_chart(30, 65, filename)
-    pie_img_path = f'home/chart_img/pie_({filename}).png'
-    bar_chart_path = 'pathofbarchart'
-    data = planning_to_visualize(origin_name=lastplan.origin_name, destin_name=lastplan.destin_name, avg_time=lastplan.avg_time, percent=impt_percent, pie_chart=pie_img_path, bar_chart=bar_chart_path)
+    # # test plt show
+    # filename = f'{datetime.datetime.now()}'
+    # pie_chart(30, 65, filename)
+    # # pie_img_path = f'home/chart_img/pie_({filename}).png'
+    # # bar_chart_path = 'pathofbarchart'
+    # # data = planning_to_visualize(origin_name=lastplan.origin_name, destin_name=lastplan.destin_name, avg_time=lastplan.avg_time, percent=impt_percent, pie_chart=pie_img_path, bar_chart=bar_chart_path)
+
+    # context = {
+    #     'percentage': impt_percent,
+    #     # 'pie_img_path': pie_img_path,
+    # }
+
+    data_temp = Planning_temp.objects.get(plantype=plantype) # change ff to var that instead to type of planning
+    add_recent_record(data_temp.og, data_temp.ds, data_temp.traveltime, data_temp.arrv)
+    Planning_temp.objects.all().delete()
 
     context = {
-        'percentage': impt_percent,
-        'pie_img_path': pie_img_path,
+        'data_temp': data_temp,
+        'start': data_temp.start.strftime('%H:%M'),
+        'arrv': data_temp.arrv.strftime('%H:%M')
     }
+
     return HttpResponse(template.render(context, request))
 
 def recent_plan_seeall(request):
@@ -94,3 +118,10 @@ def recent_plan_seeall(request):
 def soon(request):
     template = loader.get_template('comingsoon.html')
     return HttpResponse(template.render())
+
+def back_to_home(request):
+    return HttpResponseRedirect(reverse('index_home'))
+
+def reset_temp_data(request):
+    Planning_temp.objects.all().delete()
+    return HttpResponseRedirect(reverse('index_home'))

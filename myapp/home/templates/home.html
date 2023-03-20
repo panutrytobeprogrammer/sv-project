@@ -10,15 +10,16 @@
     <body>
         <div class="bg-gradient-to-br from-cyan-100 to-red-100 min-h-screen">
             <div class="relative bg-[#47a6ab] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl sm:px-10">
-                <p class="ml-4 text-white text-2xl font-bold">Planning your time</p>
+                <a href="reset_temp_data/" class="ml-4 text-white text-2xl font-bold">Planning your time</a>
                 <p class="ml-4 text-white text-sm pt-2 pb-2 font-normal">Please enter your destination</p>
+                <br>
                 <div class="relative bg-[rgb(256,256,256,0.47)] px-6 pt-3 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 space-y-3">
                     <div class="grid grid-cols-8 gap-1">
-                        <div class="col-start-1 col-span-4">
+                        <!-- <div class="col-start-1 col-span-4">
                             <a class="text-white font-thin hover:font-normal focus:font-normal">One-Way</a>
                             <a class="text-white">  |  </a>
                             <a class="text-white font-thin hover:font-normal focus:font-normal">Round Trip</a>
-                        </div>
+                        </div> -->
                         <div class="col-end-9 col-span-1 justify-end">
                             <button class="fa-regular fa-map text-white text-2xl hover:font-semibold focus:font-bold" onclick="window.location='map/'"></button>
                         </div>
@@ -58,7 +59,7 @@
                 <div class="relative bg-[#e8f8fb] px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10">
                     <a>
                         <p class="text-right text-[11px]">
-                            {{ last_data.timestamp }}
+                            {{ last_data.timestamp|date:"j F, H:i" }}
                         </p>
                         <i class="fa-solid fa-circle pr-3 text-[#47a6ab]"></i>
                         <a class="text-sm ml-3">

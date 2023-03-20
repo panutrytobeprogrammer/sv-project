@@ -19,7 +19,7 @@
                     <a>  <!-- เพิ่มให้ tag a อันนี้เปลี่ยนตามข้อมูลล่าสุดของตัวแอพ -->
                         
                         <p class="text-right text-[11px]">
-                            {{ x.timestamp }}
+                            {{ x.timestamp|date:"j F, H:i" }}
                         </p>
                         <i class="fa-solid fa-circle pr-3 text-[#47a6ab]"></i>
                         <a class="text-sm ml-3">

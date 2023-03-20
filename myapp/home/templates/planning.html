@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/e18a3893e1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <link rel="stylesheet" href="style.css">
     <style type="text/css">
         html{
           height:100%;
@@ -37,8 +38,8 @@
         <div class="relative bg-[#47a6ab] h-100 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl" id="map">
             <a class="ml-4 p-5 fa-solid fa-circle-chevron-left text-[rgb(255,255,255,0.82)] text-[36px] hover:text-[#00000]" href="../"></a>
         </div>
-        <div class="relative bg-[#fff] pt-10 pb-10 pl-5 pr-5 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl">
-          <br>
+        <div class="relative bg-[#fff] pt-10 pb-10 pl-5 pr-5 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl space-y-5">
+          <!-- <br>
           <div class="grid grid-cols-3 gap-1">
             <p class="col-start-1 text-2xl text-right">{{ now }}</p>
             <div class="relative bg-[#47a6ab] py-2 px-5 shadow-lg ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
@@ -51,10 +52,6 @@
             <div class="relative bg-[#efefef] py-2 px-5 ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
               <p class="text-m font-light">{{ origin_name }} to {{ destin_name }}</p>
             </div>
-            <!-- <p><span id="demo"></span>Extra time</p> -->
-            <!-- <div class="relative bg-[#efefef] py-2 px-5 ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
-              <p class="text-m font-light">{{ destin_name }}</p>
-            </div> -->
           </div>
           <br>
           <form action="visualize/" method="post" class="space-y-3">
@@ -72,11 +69,6 @@
             <br>
             <div class="relative bg-[rgb(71,166,171,0.18)] pt-5 pb-10 px-6 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
               <p class="font-semibold text-m">Important percentage</p>
-              <!-- <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser" name="appointment">
-                {% for x in location_data %}
-                <option class="truncate" value="{{ x.name }}">{{ x.name }}</option>
-                {% endfor %}
-              </select> -->
               <div class="flex justify-evenly slidecontainer pt-5">
                 <input type="range" min="1" max="100" value="50" class="slider" id="myRange" name="percentage">
               </div>
@@ -84,10 +76,113 @@
             </div>
             <br><br>
             <input type="submit" value="Next" class="flex bg-black text-white justify-stretch px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">
-          </form>
+          </form> -->
+          <p class="text-[24px] font-semibold ml-3">Choose the best time for you!</p>
+          <p class="text-m font-light ml-3">{{ origin_name }} to {{ destin_name }}</p>
+
+          <!-- Suggested div -->
+          <table border="0">
+            {% for x in dep_time %}
+              <a href="visualize/{{ x.plantype }}" class="grid grid-cols-3 gap-1 bg-[#efefef] sm:mx-auto sm:max-w-lg sm:rounded-3xl pt-6 pb-8 hover:bg-[rgb(71,166,171,0.18)]">
+                <div class="col-start-1 col-span-2 px-6">
+                  <div class="relative space-y-3">
+                    <div class="flex rounded-3xl">
+                        <div class="tooltip text-m text-white font-light bg-[#47a6ab] py-1 px-3 rounded-2xl">{{ x.plantype }}</div>    
+                    </div>
+                    <div class="pb-5">
+                      <div class="grid grid-cols-3 gap-1">
+                        <div class="col-start-1 ml-3">
+                          <p class="text-center text-2xl font-semibold" name="dep_time">{{ x.start|time:"H:i" }}</p>
+                          <p class="text-center text-sm font-light">Started</p>
+                        </div>
+                        <div class="col-start-2">
+                          <p class="text-center"><i class="fa-solid fa-arrow-right"></i></p>
+                        </div>
+                        <div class="col-start-3 mr-3">
+                          <p class="text-center text-2xl font-semibold">{{ x.arrv|time:"H:i" }}</p>
+                          <p class="text-center text-sm font-light">Arrived</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-start-3 border-l-2 flex justify-evenly">
+                  <div class="bg-[#47a6ab] shadow-xl rounded-full p-7 content-evenly">
+                    <p class="text-4xl text-center text-white">{{ x.traveltime }}</p>
+                    <p class="text-l text-center text-white">min</p>
+                  </div>
+                </div>
+              </a>
+            {% endfor %}
+          </table>
+<!-- 
+          Most pop div
+          <a href="visualize/avg/" class="grid grid-cols-3 gap-1 bg-[#efefef] sm:mx-auto sm:max-w-lg sm:rounded-3xl pt-6 pb-8 hover:bg-[rgb(71,166,171,0.18)]">
+            <div class="col-start-1 col-span-2 px-6">
+              <div class="relative space-y-3">
+                <div class="flex rounded-3xl">
+                    <div class="tooltip text-m text-white font-light bg-[#47a6ab] py-1 px-3 rounded-2xl">Most Popular</div>    
+                </div>
+                <div class="pb-5">
+                  <div class="grid grid-cols-3 gap-1">
+                    <div class="col-start-1 ml-3">
+                      <p class="text-center text-2xl font-semibold">{{ dep_time_avg }}</p>
+                      <p class="text-center text-sm font-light">Started</p>
+                    </div>
+                    <div class="col-start-2">
+                      <p class="text-center"><i class="fa-solid fa-arrow-right"></i></p>
+                    </div>
+                    <div class="col-start-3 mr-3">
+                      <p class="text-center text-2xl font-semibold">{{ now }}</p>
+                      <p class="text-center text-sm font-light">Arrived</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-start-3 border-l-2 flex justify-evenly">
+              <div class="bg-[#47a6ab] shadow-xl rounded-full p-7 content-evenly">
+                <p class="text-4xl text-center text-white">{{ time.avg_time }}</p>
+                <p class="text-l text-center text-white">min</p>
+              </div>
+            </div>
+          </a>
+
+          Fastest div
+          <a href="visualize/ff/" class="grid grid-cols-3 gap-1 bg-[#efefef] sm:mx-auto sm:max-w-lg sm:rounded-3xl pt-6 pb-8 hover:bg-[rgb(71,166,171,0.18)]">
+            <div class="col-start-1 col-span-2 px-6">
+              <div class="relative space-y-3">
+                <div class="flex rounded-3xl">
+                    <div class="tooltip text-m text-white font-light bg-[#47a6ab] py-1 px-3 rounded-2xl">Fasten</div>    
+                </div>
+                <div class="pb-5 pt-">
+                  <div class="grid grid-cols-3 gap-1">
+                    <div class="col-start-1 ml-3">
+                      <p class="text-center text-2xl font-semibold">{{ dep_time_ff }}</p>
+                      <p class="text-center text-sm font-light">Started</p>
+                    </div>
+                    <div class="col-start-2">
+                      <p class="text-center"><i class="fa-solid fa-arrow-right"></i></p>
+                    </div>
+                    <div class="col-start-3 mr-3">
+                      <p class="text-center text-2xl font-semibold">{{ now }}</p>
+                      <p class="text-center text-sm font-light">Arrived</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-start-3 border-l-2 flex justify-evenly">
+              <div class="bg-[#47a6ab] shadow-xl rounded-full p-7 content-evenly">
+                <p class="text-4xl text-center text-white">{{ time.ff_time }}</p>
+                <p class="text-l text-center text-white">min</p>
+              </div>
+            </div>
+          </a> -->
+
         </div>
       </div>
-      <script>
+      <!-- <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
         output.innerHTML = slider.value;
@@ -95,7 +190,7 @@
         slider.oninput = function() {
           output.innerHTML = this.value;
         }
-        </script>
+        </script> -->
     </body>
 </body>
 </html>

@@ -7,27 +7,82 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/e18a3893e1.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <!-- <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" /> -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="bg-gradient-to-br from-cyan-100 to-red-100 min-h-screen">
         <div class="relative bg-[#47a6ab] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl sm:px-10">
             
         </div>
-        <div class="relative bg-[#fff] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10">
-            <div class="grid grid-cols-2">
-                <div class="col-start-1 space-y-3">
-                    <p class="text-xl font-semibold">Planning time</p>
-                    <div class="flex justify-center bg-[rgb(71,166,171,0.2)] p-3 ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10">
-                        <p class="text-[36px]">25 min</p>
+        <div class="relative bg-[#fff] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 space-y-10">
+            
+            <!--  -->
+            <div class="relative bg-[#efefef] px-6 pt-6 pb-6 shadow-lg ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl divide-y divide-black-100">
+                <div class="grid grid-cols-3 pb-6">
+                    <div class="col-start-1">
+                        <div class="flex justify-center bg-[rgb(71,166,171,0.18)] ring-1 ring-gray-900/5 rounded-3xl px-5 py-10">
+                            <p class="text-4xl font-semibold tracking-wider">{{ data_temp.traveltime }}</p>
+                            <p class="mt-3.5">min</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col justify-evenly col-start-2 col-span-2 ml-10">
+                        <div class="grid grid-cols-6 bg-[#47a6ab] rounded-2xl p-1 shadow-lg">
+                            <i class="col-start-1 flex justify-center fa-solid fa-car pt-1 text-white"></i>
+                            <p class="col-span-5 text-white text-sm ml-3">Travel time {{ data_temp.traveltime }} min</p>
+                        </div>
+                        <div class="grid grid-cols-6 bg-[#fff] rounded-2xl p-1 shadow-xl">
+                            <i class="col-start-1 flex justify-center fa-solid fa-circle-plus pt-1"></i>
+                            <p class="col-span-5 text-sm ml-3">Extra time .. min</p>
+                        </div>
                     </div>
                 </div>
-                <div class="col-start-2 flex justify-center">
-                    <p>Pie Chart</p>
-                    {% load static %}
-                    <img src="{% static pie_img_path %}">
+                <div class="flex flex-col px-6 pt-6 space-y-3">
+                    <div class="grid grid-cols-6">
+                        <div class="col-start-1">
+                            <p class="text-center">{{ start }}</p>
+                        </div>
+                        <div class="col-start-2 text-center">
+                            <p class="fa-solid fa-circle text-[#47a6ab]"></p>
+                        </div>
+                        <div class="col-span-4 ml-3">
+                            <p class="">{{ data_temp.og }}</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-6">
+                        <div class="col-start-2 text-center">
+                            <i class="fa-solid fa-angles-down text-[#8c8c8c]"></i>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-6">
+                        <div class="col-start-1">
+                            <p class="text-center">{{ arrv }}</p>
+                        </div>
+                        <div class="col-start-2 text-center">
+                            <p class="fa-solid fa-location-dot text-[#FF370D]"></p>
+                        </div>
+                        <div class="col-span-4 ml-3">
+                            <p class="">{{ data_temp.ds }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- bar chart -->
+            <div class="space-y-5">
+                <div class="grid grid-cols-2">
+                    <div class="flex justify-evenly bg-[#efefef] rounded-2xl px-4 py-2 tooltip">Traffic Congestion<i class="mt-1 fa-solid fa-circle-info"></i>
+                        <span class="tooltiptext">describe about traffic Congestion</span>
+                    </div>
+                </div>
+                <div class="">Chart</div>
+            </div>
+
+            <!-- done -->
+            <div class="flex justify-center">
+                <a class="bg-black text-white text-2xl px-5 py-3 rounded-2xl" href="done/">Done</a>
+            </div>
+
         </div>
     </div> 
 </body>

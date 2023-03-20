@@ -28,3 +28,11 @@ class planning_to_visualize(models.Model):
     percent = models.PositiveIntegerField()
     pie_chart = models.ImageField()
     bar_chart = models.ImageField()
+
+class Planning_temp(models.Model):
+    plantype = models.CharField(max_length=255)
+    og = models.CharField(max_length=255)
+    start = models.DateTimeField()
+    ds = models.CharField(max_length=255)
+    arrv = models.DateTimeField()
+    traveltime = models.CharField(max_length=255)

@@ -46,18 +46,21 @@ def query_time(route, dt):
     dt = pd.to_datetime(dt)
     day = diff(dt.date())
 
-    avg_time = 0    # buffer index = 0%
-    plan_time = 0   # buffer index = 100% (95th percentile)
+    ff_time = 0
+    avg_time = 0 
+    p95_time = 0  
 
     a = line[route]
     for i in range(len(a)-1):
         temp = df[(df['from']==a[i]) & (df['end']==a[i+1]) & (df['days']==day) & (df['time']==time)]
-        # ptime += temp['Planningtime'].mean() + 180 # planning time (95th percentile)
-        avg_time += temp['average traveltime'].mean() + 180 # +180 คือบวกไฟแดงละ 3 นาที
-        plan_time += temp['Planningtime']
+        ff_time += temp['freeflow traveltime'].mean() # free flow
+        avg_time += temp['average traveltime'].mean() # average
+        p95_time += temp['95th percentile'].mean() # 95th percentile
+    
     if avg_time == np.nan:
-        return 0
-    return [avg_time/60, plan_time]
+        return [0,0,0]
+    
+    return {'ff_time':round(ff_time), 'avg_time':round(avg_time), 'p95_time':round(p95_time)}
 
 # print(round(float(query_time('sm_qs'))))
 
@@ -85,6 +88,6 @@ def pie_chart(time, percent, filename):
     center_circle = plt.Circle((0, 0), 0.7, fc='white')
     fig = plt.gcf()
     fig.gca().add_artist(center_circle)
-    plt.savefig(f'home/chart_img/pie_({filename}).png')
+    # plt.savefig(f'home/chart_img/pie_({filename}).png')
     # plt.show()
     plt.close()
