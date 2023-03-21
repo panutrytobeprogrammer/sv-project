@@ -9,10 +9,27 @@
     <script src="https://kit.fontawesome.com/e18a3893e1.js" crossorigin="anonymous"></script>
     <!-- <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" /> -->
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="https://api.longdo.com/map/?key=3591015ec2722fad511c21639251c17f"></script>
+    <script>
+        function init() {
+        map = new longdo.Map({
+            placeholder: document.getElementById('map')
+        });
+        map.Route.placeholder(document.getElementById('result'));
+        map.Route.add(new longdo.Marker({ lon: parseFloat('{{ og_pos_lon }}'), lat: parseFloat('{{ og_pos_lat }}') },
+            { 
+                title: '{{ data_temp.og }}', 
+                // detail: 'I\'m here' 
+            }
+        ));
+        map.Route.add({ lon: parseFloat('{{ ds_pos_lon }}'), lat: parseFloat('{{ ds_pos_lat }}') });
+        map.Route.search();
+        }
+   </script>
 </head>
-<body>
+<body onload="init();">
     <div class="bg-gradient-to-br from-cyan-100 to-red-100 min-h-screen">
-        <div class="relative bg-[#47a6ab] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl sm:px-10">
+        <div class="relative bg-[#47a6ab] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl sm:px-10" id="map">
             
         </div>
         <div class="relative bg-[#fff] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 space-y-10">
@@ -75,7 +92,31 @@
                         <span class="tooltiptext">describe about traffic Congestion</span>
                     </div>
                 </div>
-                <div class="">Chart</div>
+                <div class="">
+                    <canvas id="myChart"></canvas>
+                </div>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    const ctx = document.getElementById('myChart');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                        labels: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'],
+                        datasets: [{
+                            label: 'Congestion',
+                            data: JSON.parse('{{ data }}'),
+                            borderWidth: 0
+                        }]
+                        },
+                        options: {
+                        scales: {
+                            y: {
+                            beginAtZero: true
+                            }
+                        }
+                        }
+                    });
+                </script>
             </div>
 
             <!-- done -->

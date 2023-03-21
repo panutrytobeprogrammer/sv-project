@@ -4,6 +4,7 @@ matplotlib.use('Agg')
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 def index_time(time, percent):
     pass
@@ -24,7 +25,7 @@ def s_name(name):
 
 def query_time(route, dt):
     if route[0:2] == route[3:]:
-        return 0
+        return {'ff_time':0, 'avg_time':0, 'p95_time':0}
     line = {
         'sm_ch': ['แยกสามย่าน', 'แยกอังรีดูนังค์', 'แยกศาลาแดง'],
         'sm_lp': ['แยกสามย่าน', 'แยกอังรีดูนังค์', 'แยกศาลาแดง', 'แยกราชดำริ'],
@@ -48,7 +49,8 @@ def query_time(route, dt):
 
     ff_time = 0
     avg_time = 0 
-    p95_time = 0  
+    p95_time = 0
+    tti = []
 
     a = line[route]
     for i in range(len(a)-1):
@@ -56,38 +58,28 @@ def query_time(route, dt):
         ff_time += temp['freeflow traveltime'].mean() # free flow
         avg_time += temp['average traveltime'].mean() # average
         p95_time += temp['95th percentile'].mean() # 95th percentile
+        # tti.append(temp['Traveltime Index'].mean())
+    # tti = sum(tti)/len(tti)
     
-    if avg_time == np.nan:
-        return [0,0,0]
-    
-    return {'ff_time':round(ff_time), 'avg_time':round(avg_time), 'p95_time':round(p95_time)}
+    if not math.isnan(ff_time) or not math.isnan(avg_time) or not math.isnan(p95_time):# or math.isnan(tti):
+        return {'ff_time':round(ff_time), 'avg_time':round(avg_time), 'p95_time':round(p95_time)}#, 'tti':tti}
+    else:
+        return {'ff_time':0, 'avg_time':0, 'p95_time':0}#, 'tti':0}
 
-# print(round(float(query_time('sm_qs'))))
-
-def query_visual_tti(day, time):
-    df = pd.read_csv('home/df_varandma.csv')
-    df = df.query(f'days == "{day}" and time == "{time}"')
-    return df.head()
-
-
-def buffer_index(time, percent):
-    return (percent/100)*time
-
-def value_pie(pct, all_val):
-    absolute = int((pct/100)*all_val)
-    return f'{absolute:d} min'
-
-
-def pie_chart(time, percent, filename):
-    buffer = buffer_index(time, percent)
-    data = [time, buffer]
-    color = ['#47A6AB', '#E54450']
-    explode = (0.01, 0.01)
-    plt.pie(data, colors=color, explode=explode, labels=['Average', 'Extra'], 
-            autopct=lambda pct: value_pie(pct, time+buffer), pctdistance=0.85)
-    center_circle = plt.Circle((0, 0), 0.7, fc='white')
-    fig = plt.gcf()
-    fig.gca().add_artist(center_circle)
-    # plt.savefig(f'home/chart_img/pie_({filename}).png')
-    # plt.show()
-    plt.close()
+def graph_time(og, ds, time):
+    # set_time = {'time':[], 'tti':[]} #'Fasten':[], 'Most popular':[], 'Suggested':[]}
+    set_time = {'time':[], 'Fasten':[], 'Most popular':[], 'Suggested':[]}
+    start = f'{str(time)[:10]} 08:00:00'
+    start = pd.to_datetime(start)
+    stop = f'{str(time)[:10]} 21:00:00'
+    stop = pd.to_datetime(stop)
+    delta = datetime.timedelta(hours=1)
+    while start <= stop:
+        time = query_time(route=f'{s_name(og)}_{s_name(ds)}', dt=start)
+        set_time['time'].append(start.strftime('%H:%M'))
+        set_time['Fasten'].append(time['ff_time'])
+        set_time['Most popular'].append(time['avg_time'])
+        set_time['Suggested'].append(time['p95_time'])
+        # set_time['tti'].append(time['tti'])
+        start += delta
+    return set_time

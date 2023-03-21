@@ -22,20 +22,28 @@
           width: 100%;
         }
     </style>
-    <!-- <script src="https://api.longdo.com/map/?key=3591015ec2722fad511c21639251c17f"></script> -->
+    <script type="text/javascript" src="https://api.longdo.com/map/?key=3591015ec2722fad511c21639251c17f"></script>
     <script>
-        var map;
-        function init() {
+      function init() {
         map = new longdo.Map({
           placeholder: document.getElementById('map')
         });
+        map.Route.placeholder(document.getElementById('result'));
+        map.Route.add(new longdo.Marker({ lon: parseFloat('{{ og_pos_lon }}'), lat: parseFloat('{{ og_pos_lat }}') },
+            { 
+                title: '{{ data_temp.og }}', 
+                // detail: 'I\'m here' 
+            }
+        ));
+        map.Route.add({ lon: parseFloat('{{ ds_pos_lon }}'), lat: parseFloat('{{ ds_pos_lat }}') });
+        map.Route.search();
       }
     </script>
 </head>
 <body>
     <body onload="init();"> 
       <div class="bg-gradient-to-br from-cyan-100 to-red-100 min-h-screen">
-        <div class="relative bg-[#47a6ab] h-100 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl" id="map">
+        <div class="relative bg-[#47a6ab] h-200 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl" id="map">
             <a class="ml-4 p-5 fa-solid fa-circle-chevron-left text-[rgb(255,255,255,0.82)] text-[36px] hover:text-[#00000]" href="../"></a>
         </div>
         <div class="relative bg-[#fff] pt-10 pb-10 pl-5 pr-5 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl space-y-5">

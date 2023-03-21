@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from .models import Recentplan, location, Appoint_default, planning_to_visualize, Planning_temp
 from django.urls import reverse
@@ -7,8 +7,8 @@ import datetime
 from .program_func import *
 
 
-# Create your views here.
 
+# Create your views here.
 
 def index(request):
     # load template
@@ -60,6 +60,9 @@ def planning(request):
     Planning_temp(plantype='Most popular', og=origin_name, start=dep_time_avg, ds=destin_name, arrv=plantime, traveltime=avg_time).save()
     Planning_temp(plantype='Suggested', og=origin_name, start=dep_time_p95, ds=destin_name, arrv=plantime, traveltime=p95_time).save()
     
+    og_pos = location.objects.get(name=origin_name).geometry.split(',')
+    ds_pos = location.objects.get(name=destin_name).geometry.split(',')
+
     dep_time = Planning_temp.objects.all().order_by('-id')
 
     context = {
@@ -71,7 +74,11 @@ def planning(request):
         'dep_time_ff':dep_time_ff.strftime('%H:%M'),
         'dep_time_avg':dep_time_avg.strftime('%H:%M'),
         'dep_time_p95':dep_time_p95.strftime('%H:%M'),
-        'dep_time': dep_time
+        'dep_time': dep_time,
+        'og_pos_lon': og_pos[1][:-1],
+        'og_pos_lat': og_pos[0][1:],
+        'ds_pos_lon': ds_pos[1][:-1],
+        'ds_pos_lat': ds_pos[0][1:],
     }
     return HttpResponse(template.render(context, request))
 
@@ -95,14 +102,25 @@ def visualize(request, plantype):
     #     # 'pie_img_path': pie_img_path,
     # }
 
-    data_temp = Planning_temp.objects.get(plantype=plantype) # change ff to var that instead to type of planning
+    data_temp = Planning_temp.objects.get(plantype=plantype)
     add_recent_record(data_temp.og, data_temp.ds, data_temp.traveltime, data_temp.arrv)
     Planning_temp.objects.all().delete()
+    time_graph = graph_time(data_temp.og, data_temp.ds, data_temp.arrv)
+    label = time_graph['time']
+    data = time_graph[plantype]
+
+    og_pos = location.objects.get(name=data_temp.og).geometry.split(',')
+    ds_pos = location.objects.get(name=data_temp.ds).geometry.split(',')
 
     context = {
         'data_temp': data_temp,
         'start': data_temp.start.strftime('%H:%M'),
-        'arrv': data_temp.arrv.strftime('%H:%M')
+        'arrv': data_temp.arrv.strftime('%H:%M'),
+        'data': data,
+        'og_pos_lon': og_pos[1][:-1],
+        'og_pos_lat': og_pos[0][1:],
+        'ds_pos_lon': ds_pos[1][:-1],
+        'ds_pos_lat': ds_pos[0][1:],
     }
 
     return HttpResponse(template.render(context, request))
