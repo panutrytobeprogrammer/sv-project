@@ -52,13 +52,10 @@ def planning(request):
     dep_time_avg = plantime - datetime.timedelta(minutes=avg_time)
     dep_time_p95 = plantime - datetime.timedelta(minutes=p95_time)
 
-    # get appointment time
-    # default_time = Appoint_default.objects.all().values()
-
     # save to planning temp table
-    Planning_temp(plantype='Fasten', og=origin_name, start=dep_time_ff, ds=destin_name, arrv=plantime, traveltime=ff_time).save()
-    Planning_temp(plantype='Most popular', og=origin_name, start=dep_time_avg, ds=destin_name, arrv=plantime, traveltime=avg_time).save()
-    Planning_temp(plantype='Suggested', og=origin_name, start=dep_time_p95, ds=destin_name, arrv=plantime, traveltime=p95_time).save()
+    Planning_temp(plantype='Unsafe', og=origin_name, start=dep_time_ff, ds=destin_name, arrv=plantime, traveltime=ff_time, extratime=ff_time-avg_time).save()
+    Planning_temp(plantype='Usual', og=origin_name, start=dep_time_avg, ds=destin_name, arrv=plantime, traveltime=avg_time, extratime=0).save()
+    Planning_temp(plantype='Safe', og=origin_name, start=dep_time_p95, ds=destin_name, arrv=plantime, traveltime=p95_time,  extratime=p95_time-avg_time).save()
     
     og_pos = location.objects.get(name=origin_name).geometry.split(',')
     ds_pos = location.objects.get(name=destin_name).geometry.split(',')
@@ -70,7 +67,6 @@ def planning(request):
         'destin_name':destin_name,
         'time':time,
         'now':plantime.strftime('%H:%M'),
-        # 'default_time':default_time,
         'dep_time_ff':dep_time_ff.strftime('%H:%M'),
         'dep_time_avg':dep_time_avg.strftime('%H:%M'),
         'dep_time_p95':dep_time_p95.strftime('%H:%M'),
@@ -83,34 +79,26 @@ def planning(request):
     return HttpResponse(template.render(context, request))
 
 def visualize(request, plantype):
-    # impt_percent = request.POST['percentage']
     template = loader.get_template('visualize.html')
-    # # plan_time = query_time()[1]
-    # # df = query_visual_tti('monday', '8:00:00')
-
-    # lastplan = Recentplan.objects.last()
-
-    # # test plt show
-    # filename = f'{datetime.datetime.now()}'
-    # pie_chart(30, 65, filename)
-    # # pie_img_path = f'home/chart_img/pie_({filename}).png'
-    # # bar_chart_path = 'pathofbarchart'
-    # # data = planning_to_visualize(origin_name=lastplan.origin_name, destin_name=lastplan.destin_name, avg_time=lastplan.avg_time, percent=impt_percent, pie_chart=pie_img_path, bar_chart=bar_chart_path)
-
-    # context = {
-    #     'percentage': impt_percent,
-    #     # 'pie_img_path': pie_img_path,
-    # }
 
     data_temp = Planning_temp.objects.get(plantype=plantype)
     add_recent_record(data_temp.og, data_temp.ds, data_temp.traveltime, data_temp.arrv)
-    Planning_temp.objects.all().delete()
     time_graph = graph_time(data_temp.og, data_temp.ds, data_temp.arrv)
-    label = time_graph['time']
+    # label = time_graph['time']
     data = time_graph[plantype]
 
     og_pos = location.objects.get(name=data_temp.og).geometry.split(',')
     ds_pos = location.objects.get(name=data_temp.ds).geometry.split(',')
+
+    extratime = data_temp.extratime
+    if plantype == 'Unsafe':
+        txt_et = f'Save {abs(extratime)} min'
+    elif plantype == 'Safe':
+        txt_et = f'Extra time {extratime} min'
+    else:
+        txt_et = 'No extra time'
+    
+    ttt = data_temp.traveltime - extratime
 
     context = {
         'data_temp': data_temp,
@@ -121,6 +109,9 @@ def visualize(request, plantype):
         'og_pos_lat': og_pos[0][1:],
         'ds_pos_lon': ds_pos[1][:-1],
         'ds_pos_lat': ds_pos[0][1:],
+        'txt_et':txt_et,
+        'ttt':ttt,
+        'extratime':extratime,
     }
 
     return HttpResponse(template.render(context, request))
@@ -138,6 +129,7 @@ def soon(request):
     return HttpResponse(template.render())
 
 def back_to_home(request):
+    Planning_temp.objects.all().delete()
     return HttpResponseRedirect(reverse('index_home'))
 
 def reset_temp_data(request):

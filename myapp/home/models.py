@@ -35,4 +35,5 @@ class Planning_temp(models.Model):
     start = models.DateTimeField()
     ds = models.CharField(max_length=255)
     arrv = models.DateTimeField()
-    traveltime = models.CharField(max_length=255)
+    traveltime = models.PositiveIntegerField()
+    extratime = models.IntegerField()

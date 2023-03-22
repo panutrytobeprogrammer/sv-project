@@ -7,9 +7,8 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/e18a3893e1.js" crossorigin="anonymous"></script>
-    <!-- <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" /> -->
-    <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="https://api.longdo.com/map/?key=3591015ec2722fad511c21639251c17f"></script>
+    <!-- <script src="home/templates/jsfunc_for_plan.js"></script> -->
     <script>
         function init() {
         map = new longdo.Map({
@@ -26,32 +25,65 @@
         map.Route.search();
         }
    </script>
+   <style>
+            .tooltip {
+        position: relative;
+        /* border-bottom: 1px dotted black; */
+        }
+
+        .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 245px;
+        background-color: black;
+        opacity: 0.7;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        top: 20px;
+        left: 100%;
+        }
+
+        .tooltip:hover .tooltiptext {
+        visibility: visible;
+        }
+   </style>
 </head>
 <body onload="init();">
     <div class="bg-gradient-to-br from-cyan-100 to-red-100 min-h-screen">
-        <div class="relative bg-[#47a6ab] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl sm:px-10" id="map">
-            
+        <div class="relative bg-[#47a6ab] shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-b-3xl">
+            <div class="relative bg-[#47a6ab] shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
+                <a class="ml-4 p-5 fa-solid fa-circle-chevron-left text-[rgb(255,255,255,0.82)] text-[36px] hover:text-[#00000]" href="../"></a>
+                <div class="relative bg-[#fff] h-48 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl" id="map">
+                </div>
+            </div>
         </div>
-        <div class="relative bg-[#fff] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 space-y-10">
+        <div class="relative bg-[#fff] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl sm:px-10 space-y-10">
             
             <!--  -->
-            <div class="relative bg-[#efefef] px-6 pt-6 pb-6 shadow-lg ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl divide-y divide-black-100">
+            <div class="relative bg-[#efefef] px-6 pt-6 pb-6 shadow-lg ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl divide-y divide-black-100">
                 <div class="grid grid-cols-3 pb-6">
                     <div class="col-start-1">
-                        <div class="flex justify-center bg-[rgb(71,166,171,0.18)] ring-1 ring-gray-900/5 rounded-3xl px-5 py-10">
-                            <p class="text-4xl font-semibold tracking-wider">{{ data_temp.traveltime }}</p>
-                            <p class="mt-3.5">min</p>
+                        <div class="relative justify-center bg-[rgb(71,166,171,0.18)] ring-1 ring-gray-900/5 rounded-3xl p-5">
+                            <p class="text-xl text-center">Your trip</p>
+                            <p class="text-3xl font-semibold tracking-wider text-center">{{ data_temp.traveltime }}</p>
+                            <p class="text-l text-center">min</p>
                         </div>
                     </div>
                     <div class="flex flex-col justify-evenly col-start-2 col-span-2 ml-10">
-                        <div class="grid grid-cols-6 bg-[#47a6ab] rounded-2xl p-1 shadow-lg">
-                            <i class="col-start-1 flex justify-center fa-solid fa-car pt-1 text-white"></i>
-                            <p class="col-span-5 text-white text-sm ml-3">Travel time {{ data_temp.traveltime }} min</p>
+                        <div class="grid grid-cols-6 bg-[#fff] rounded-2xl p-1 shadow-lg">
+                            <i class="col-start-1 flex justify-center fa-solid fa-car pt-1 text-black"></i>
+                            <p class="col-span-5 text-sm ml-3">Travel time {{ ttt }} min</p>
                         </div>
-                        <div class="grid grid-cols-6 bg-[#fff] rounded-2xl p-1 shadow-xl">
-                            <i class="col-start-1 flex justify-center fa-solid fa-circle-plus pt-1"></i>
-                            <p class="col-span-5 text-sm ml-3">Extra time .. min</p>
+                        <div class="grid grid-cols-6 rounded-2xl p-1 shadow-xl" id="myDiv">
+                            <i class="col-start-1 flex justify-center pt-1 fa-solid" id="ilogo"></i>
+                            <p class="col-span-5 text-sm ml-3" id="myPet">{{ txt_et }}</p>
                         </div>
+                        <!-- <div id="myDiv">{{ extratime }}</div> -->
                     </div>
                 </div>
                 <div class="flex flex-col px-6 pt-6 space-y-3">
@@ -88,7 +120,8 @@
             <!-- bar chart -->
             <div class="space-y-5">
                 <div class="grid grid-cols-2">
-                    <div class="flex justify-evenly bg-[#efefef] rounded-2xl px-4 py-2 tooltip">Traffic Congestion<i class="mt-1 fa-solid fa-circle-info"></i>
+                    <div class="flex justify-evenly bg-[#efefef] rounded-2xl px-4 py-2 tooltip">Traffic Congestion
+                        <i class="mt-1 fa-solid fa-circle-info"></i>
                         <span class="tooltiptext">describe about traffic Congestion</span>
                     </div>
                 </div>
@@ -116,6 +149,32 @@
                         }
                         }
                     });
+                </script>
+                <script>
+                    var myDiv = document.getElementById("myDiv");
+                    var myPet = document.getElementById("myPet");
+                    var ilogo = document.getElementById("ilogo");
+                    var data = myPet.innerHTML;
+                  
+                    function checkData() {
+                      if (data.slice(0,4) == 'Save') {
+                        myDiv.style.backgroundColor = "#47a6ab";
+                        myPet.style.color = '#fff'
+                        ilogo.style.color = '#fff'
+                        ilogo.classList.add("fa-circle-minus")
+                      } else if (data.slice(0,5) == 'Extra') {
+                        myDiv.style.backgroundColor = "#ee4343";
+                        myPet.style.color = '#fff'
+                        ilogo.style.color = '#fff'
+                        ilogo.classList.add("fa-circle-plus")
+                      } else {
+                        myDiv.style.backgroundColor = "#fff";
+                        myPet.style.color = '#00000';
+                        ilogo.style.color = '#00000'
+                        ilogo.classList.add("fa-circle-stop")
+                      }
+                    }
+                    setInterval(checkData, 1);
                 </script>
             </div>
 

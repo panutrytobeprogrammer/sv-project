@@ -15,8 +15,8 @@
             <p class="ml-4 text-white text-2xl font-semibold">Recent Plan</p>
             <table border="0">
             {% for x in recent_data %}
-                <div class="relative bg-[#e8f8fb] px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10">
-                    <a>  <!-- เพิ่มให้ tag a อันนี้เปลี่ยนตามข้อมูลล่าสุดของตัวแอพ -->
+                <div class="relative bg-[#e8f8fb] px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-3xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10">
+                    <a>
                         
                         <p class="text-right text-[11px]">
                             {{ x.timestamp|date:"j F, H:i" }}

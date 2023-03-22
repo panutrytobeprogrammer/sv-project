@@ -7,20 +7,33 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/e18a3893e1.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-    <link rel="stylesheet" href="style.css">
-    <style type="text/css">
-        html{
-          height:100%;
-        }
-        body{
-          margin:0px;
-          height:100%;
-        }
-        #map {
-          height: 100%;
-          width: 100%;
-        }
+    <!-- <script src="home/templates/jsfunc_for_plan.js"></script> -->
+    <style>
+      .tooltip {
+      position: relative;
+      /* border-bottom: 1px dotted black; */
+      }
+
+      .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 245px;
+      background-color: black;
+      opacity: 0.7;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+      top: 20px;
+      left: 100%;
+      }
+
+      .tooltip:hover .tooltiptext {
+      visibility: visible;
+      }
     </style>
     <script type="text/javascript" src="https://api.longdo.com/map/?key=3591015ec2722fad511c21639251c17f"></script>
     <script>
@@ -43,162 +56,66 @@
 <body>
     <body onload="init();"> 
       <div class="bg-gradient-to-br from-cyan-100 to-red-100 min-h-screen">
-        <div class="relative bg-[#47a6ab] h-200 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl" id="map">
+        <div class="relative bg-[#47a6ab] shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl" id="">
             <a class="ml-4 p-5 fa-solid fa-circle-chevron-left text-[rgb(255,255,255,0.82)] text-[36px] hover:text-[#00000]" href="../"></a>
+            <div class="relative bg-[#fff] h-48 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl" id="map">
+            </div>
         </div>
         <div class="relative bg-[#fff] pt-10 pb-10 pl-5 pr-5 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl space-y-5">
-          <!-- <br>
-          <div class="grid grid-cols-3 gap-1">
-            <p class="col-start-1 text-2xl text-right">{{ now }}</p>
-            <div class="relative bg-[#47a6ab] py-2 px-5 shadow-lg ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
-              <p class="col-start-2 text-sm text-justify text-white align-text-bottom">{{ time }} mins</p>
-            </div>
-            <p class="col-start-3 text-2xl text-left">{{ arrv_time }}</p>
-          </div>
-          <br>
-          <div class="flex justify-evenly">
-            <div class="relative bg-[#efefef] py-2 px-5 ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
-              <p class="text-m font-light">{{ origin_name }} to {{ destin_name }}</p>
-            </div>
-          </div>
-          <br>
-          <form action="visualize/" method="post" class="space-y-3">
-            {% csrf_token %}
-            <div class="relative bg-[rgb(71,166,171,0.18)] pt-5 pb-10 px-6 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
-              <p class="font-semibold text-m">Your appointment</p>
-              <div class="flex justify-center pt-5">
-                <select class="text-sm border-none bg-white sm:mx-auto px-32 py-4 rounded-xl" placeholder="Current Location" id="browser" name="appointment">
-                  {% for x in default_time %}
-                  <option class="truncate" value="{{ x.default_time }}">{{ x.name }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-            <br>
-            <div class="relative bg-[rgb(71,166,171,0.18)] pt-5 pb-10 px-6 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl">
-              <p class="font-semibold text-m">Important percentage</p>
-              <div class="flex justify-evenly slidecontainer pt-5">
-                <input type="range" min="1" max="100" value="50" class="slider" id="myRange" name="percentage">
-              </div>
-              <p class="text-center"><span id="demo"></span> %</p>
-            </div>
-            <br><br>
-            <input type="submit" value="Next" class="flex bg-black text-white justify-stretch px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">
-          </form> -->
           <p class="text-[24px] font-semibold ml-3">Choose the best time for you!</p>
           <p class="text-m font-light ml-3">{{ origin_name }} to {{ destin_name }}</p>
 
           <!-- Suggested div -->
           <table border="0">
             {% for x in dep_time %}
-              <a href="visualize/{{ x.plantype }}" class="grid grid-cols-3 gap-1 bg-[#efefef] sm:mx-auto sm:max-w-lg sm:rounded-3xl pt-6 pb-8 hover:bg-[rgb(71,166,171,0.18)]">
+              <a href="visualize/{{ x.plantype }}" class="grid grid-cols-3 gap-1 bg-[#efefef] rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl pt-6 pb-8 hover:bg-[rgb(71,166,171,0.18)]">
                 <div class="col-start-1 col-span-2 px-6">
                   <div class="relative space-y-3">
                     <div class="flex rounded-3xl">
-                        <div class="tooltip text-m text-white font-light bg-[#47a6ab] py-1 px-3 rounded-2xl">{{ x.plantype }}</div>    
+                        <div class="tooltip text-m text-[#47a6ab] font-light bg-white py-1 px-3 rounded-2xl tooltip" id="plantype" onload="checkplan();">{{ x.plantype }}
+                          <i class="mt-1 fa-solid fa-circle-info"></i>
+                          <span class="tooltiptext" id="dscrp_detail"></span>
+                          <script>
+                            function checkplan() {
+                              var plantype = document.getElementById('plantype')
+                              var dscrp_detail = document.getElementById('dscrp_detail')
+                              var d_plan = plantype.innerHTML
+                              if (d_plan.slice(0,4) == 'Safe') {
+                                  dscrp_detail.innerHTML = 'If your appointment is important, this planning time is safe for you to arrive on time.';
+                              }
+                          }
+                          checkplan();
+                          </script>
+                        </div>    
                     </div>
                     <div class="pb-5">
                       <div class="grid grid-cols-3 gap-1">
                         <div class="col-start-1 ml-3">
-                          <p class="text-center text-2xl font-semibold" name="dep_time">{{ x.start|time:"H:i" }}</p>
-                          <p class="text-center text-sm font-light">Started</p>
+                          <p class="text-center text-xl font-semibold" name="dep_time">{{ x.start|time:"H:i" }}</p>
+                          <p class="text-center text-sm font-light">Departure</p>
                         </div>
                         <div class="col-start-2">
                           <p class="text-center"><i class="fa-solid fa-arrow-right"></i></p>
                         </div>
                         <div class="col-start-3 mr-3">
-                          <p class="text-center text-2xl font-semibold">{{ x.arrv|time:"H:i" }}</p>
-                          <p class="text-center text-sm font-light">Arrived</p>
+                          <p class="text-center text-xl font-semibold">{{ x.arrv|time:"H:i" }}</p>
+                          <p class="text-center text-sm font-light">Arrival</p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-start-3 border-l-2 flex justify-evenly">
-                  <div class="bg-[#47a6ab] shadow-xl rounded-full p-7 content-evenly">
-                    <p class="text-4xl text-center text-white">{{ x.traveltime }}</p>
+                  <div class="bg-[#47a6ab] shadow-xl rounded-full p-7 content-center">
+                    <p class="text-2xl text-center text-white">{{ x.traveltime }}</p>
                     <p class="text-l text-center text-white">min</p>
                   </div>
                 </div>
               </a>
             {% endfor %}
           </table>
-<!-- 
-          Most pop div
-          <a href="visualize/avg/" class="grid grid-cols-3 gap-1 bg-[#efefef] sm:mx-auto sm:max-w-lg sm:rounded-3xl pt-6 pb-8 hover:bg-[rgb(71,166,171,0.18)]">
-            <div class="col-start-1 col-span-2 px-6">
-              <div class="relative space-y-3">
-                <div class="flex rounded-3xl">
-                    <div class="tooltip text-m text-white font-light bg-[#47a6ab] py-1 px-3 rounded-2xl">Most Popular</div>    
-                </div>
-                <div class="pb-5">
-                  <div class="grid grid-cols-3 gap-1">
-                    <div class="col-start-1 ml-3">
-                      <p class="text-center text-2xl font-semibold">{{ dep_time_avg }}</p>
-                      <p class="text-center text-sm font-light">Started</p>
-                    </div>
-                    <div class="col-start-2">
-                      <p class="text-center"><i class="fa-solid fa-arrow-right"></i></p>
-                    </div>
-                    <div class="col-start-3 mr-3">
-                      <p class="text-center text-2xl font-semibold">{{ now }}</p>
-                      <p class="text-center text-sm font-light">Arrived</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-start-3 border-l-2 flex justify-evenly">
-              <div class="bg-[#47a6ab] shadow-xl rounded-full p-7 content-evenly">
-                <p class="text-4xl text-center text-white">{{ time.avg_time }}</p>
-                <p class="text-l text-center text-white">min</p>
-              </div>
-            </div>
-          </a>
-
-          Fastest div
-          <a href="visualize/ff/" class="grid grid-cols-3 gap-1 bg-[#efefef] sm:mx-auto sm:max-w-lg sm:rounded-3xl pt-6 pb-8 hover:bg-[rgb(71,166,171,0.18)]">
-            <div class="col-start-1 col-span-2 px-6">
-              <div class="relative space-y-3">
-                <div class="flex rounded-3xl">
-                    <div class="tooltip text-m text-white font-light bg-[#47a6ab] py-1 px-3 rounded-2xl">Fasten</div>    
-                </div>
-                <div class="pb-5 pt-">
-                  <div class="grid grid-cols-3 gap-1">
-                    <div class="col-start-1 ml-3">
-                      <p class="text-center text-2xl font-semibold">{{ dep_time_ff }}</p>
-                      <p class="text-center text-sm font-light">Started</p>
-                    </div>
-                    <div class="col-start-2">
-                      <p class="text-center"><i class="fa-solid fa-arrow-right"></i></p>
-                    </div>
-                    <div class="col-start-3 mr-3">
-                      <p class="text-center text-2xl font-semibold">{{ now }}</p>
-                      <p class="text-center text-sm font-light">Arrived</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-start-3 border-l-2 flex justify-evenly">
-              <div class="bg-[#47a6ab] shadow-xl rounded-full p-7 content-evenly">
-                <p class="text-4xl text-center text-white">{{ time.ff_time }}</p>
-                <p class="text-l text-center text-white">min</p>
-              </div>
-            </div>
-          </a> -->
-
         </div>
       </div>
-      <!-- <script>
-        var slider = document.getElementById("myRange");
-        var output = document.getElementById("demo");
-        output.innerHTML = slider.value;
-        
-        slider.oninput = function() {
-          output.innerHTML = this.value;
-        }
-        </script> -->
     </body>
 </body>
 </html>

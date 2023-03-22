@@ -68,7 +68,7 @@ def query_time(route, dt):
 
 def graph_time(og, ds, time):
     # set_time = {'time':[], 'tti':[]} #'Fasten':[], 'Most popular':[], 'Suggested':[]}
-    set_time = {'time':[], 'Fasten':[], 'Most popular':[], 'Suggested':[]}
+    set_time = {'time':[], 'Unsafe':[], 'Usual':[], 'Safe':[]}
     start = f'{str(time)[:10]} 08:00:00'
     start = pd.to_datetime(start)
     stop = f'{str(time)[:10]} 21:00:00'
@@ -77,9 +77,10 @@ def graph_time(og, ds, time):
     while start <= stop:
         time = query_time(route=f'{s_name(og)}_{s_name(ds)}', dt=start)
         set_time['time'].append(start.strftime('%H:%M'))
-        set_time['Fasten'].append(time['ff_time'])
-        set_time['Most popular'].append(time['avg_time'])
-        set_time['Suggested'].append(time['p95_time'])
+        set_time['Unsafe'].append(time['ff_time'])
+        set_time['Usual'].append(time['avg_time'])
+        set_time['Safe'].append(time['p95_time'])
         # set_time['tti'].append(time['tti'])
         start += delta
     return set_time
+
