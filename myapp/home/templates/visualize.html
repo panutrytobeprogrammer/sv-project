@@ -44,8 +44,8 @@
         /* Position the tooltip */
         position: absolute;
         z-index: 1;
-        top: 20px;
-        left: 100%;
+        top: 50px;
+        left: 50%;
         }
 
         .tooltip:hover .tooltiptext {
@@ -69,19 +69,19 @@
                 <div class="grid grid-cols-3 pb-6">
                     <div class="col-start-1">
                         <div class="relative justify-center bg-[rgb(71,166,171,0.18)] ring-1 ring-gray-900/5 rounded-3xl p-5">
-                            <p class="text-xl text-center">Your trip</p>
-                            <p class="text-3xl font-semibold tracking-wider text-center">{{ data_temp.traveltime }}</p>
-                            <p class="text-l text-center">min</p>
+                            <p class="text-xl text-center sm:text-sm">Your trip</p>
+                            <p class="text-3xl font-semibold tracking-wider text-center sm:text-xl">{{ data_temp.traveltime }}</p>
+                            <p class="text-l text-center sm:text-sm">min</p>
                         </div>
                     </div>
-                    <div class="flex flex-col justify-evenly col-start-2 col-span-2 ml-10">
+                    <div class="flex flex-col justify-evenly col-start-2 col-span-2 ml-8">
                         <div class="grid grid-cols-6 bg-[#fff] rounded-2xl p-1 shadow-lg">
                             <i class="col-start-1 flex justify-center fa-solid fa-car pt-1 text-black"></i>
-                            <p class="col-span-5 text-sm ml-3">Travel time {{ ttt }} min</p>
+                            <p class="col-span-5 text-sm ml-3 sm:text-xs">Travel time {{ ttt }} min</p>
                         </div>
                         <div class="grid grid-cols-6 rounded-2xl p-1 shadow-xl" id="myDiv">
                             <i class="col-start-1 flex justify-center pt-1 fa-solid" id="ilogo"></i>
-                            <p class="col-span-5 text-sm ml-3" id="myPet">{{ txt_et }}</p>
+                            <p class="col-span-5 text-sm ml-3 sm:text-xs" id="myPet">{{ txt_et }}</p>
                         </div>
                         <!-- <div id="myDiv">{{ extratime }}</div> -->
                     </div>
@@ -100,7 +100,7 @@
                     </div>
                     <div class="grid grid-cols-6">
                         <div class="col-start-2 text-center">
-                            <i class="fa-solid fa-angles-down text-[#8c8c8c]"></i>
+                            <i class="fa-solid fa-ellipsis-vertical text-[#8c8c8c]"></i>
                         </div>
                     </div>
                     <div class="grid grid-cols-6">
@@ -119,12 +119,12 @@
 
             <!-- bar chart -->
             <div class="space-y-5">
-                <div class="grid grid-cols-2">
-                    <div class="flex justify-evenly bg-[#efefef] rounded-2xl px-4 py-2 tooltip">Traffic Congestion
-                        <i class="mt-1 fa-solid fa-circle-info"></i>
+                <!-- <div class="grid grid-cols-2"> -->
+                    <div class="flex w-52 bg-[#efefef] rounded-2xl px-4 py-2 tooltip">Traffic Congestion
+                        <i class="flex justify-end ml-5 mt-1 fa-solid fa-circle-info"></i>
                         <span class="tooltiptext">describe about traffic Congestion</span>
                     </div>
-                </div>
+                <!-- </div> -->
                 <div class="">
                     <canvas id="myChart"></canvas>
                 </div>
@@ -134,7 +134,7 @@
                     new Chart(ctx, {
                         type: 'bar',
                         data: {
-                        labels: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'],
+                        labels: ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'],
                         datasets: [{
                             label: 'Congestion',
                             data: JSON.parse('{{ data }}'),
@@ -174,7 +174,7 @@
                         ilogo.classList.add("fa-circle-stop")
                       }
                     }
-                    setInterval(checkData, 1);
+                    checkData();
                 </script>
             </div>
 

@@ -82,9 +82,13 @@
                               var d_plan = plantype.innerHTML
                               if (d_plan.slice(0,4) == 'Safe') {
                                   dscrp_detail.innerHTML = 'If your appointment is important, this planning time is safe for you to arrive on time.';
+                              } else if (d_plan.slice(0,5) == 'Unsafe') {
+                                  dscrp_detail.innerHTML = 'Pleng is thinking about this meaning. Best is waiting for Pleng to think about it.';
+                              } else {
+                                  dscrp_detail.innerHTML = 'Pleng is thinking about this meaning. Best is waiting for Pleng to think about it.';
                               }
                           }
-                          checkplan();
+                          setInterval(checkplan(), 10);
                           </script>
                         </div>    
                     </div>
@@ -95,7 +99,10 @@
                           <p class="text-center text-sm font-light">Departure</p>
                         </div>
                         <div class="col-start-2">
-                          <p class="text-center"><i class="fa-solid fa-arrow-right"></i></p>
+                          <p class="text-center">
+                            <i class="fa-solid fa-ellipsis"></i>
+                          </p>
+                          <!-- <span class="h-1 w-full bg-[#47a6ab] lg:w-1/3"></span> -->
                         </div>
                         <div class="col-start-3 mr-3">
                           <p class="text-center text-xl font-semibold">{{ x.arrv|time:"H:i" }}</p>
@@ -105,11 +112,16 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-start-3 border-l-2 flex justify-evenly">
-                  <div class="bg-[#47a6ab] shadow-xl rounded-full p-7 content-center">
-                    <p class="text-2xl text-center text-white">{{ x.traveltime }}</p>
-                    <p class="text-l text-center text-white">min</p>
+                <div class="col-start-3 border-l-2 flex justify-center py-5">
+                  <div class="bg-[#47a6ab] rounded-full h-24 w-24 content-center p-5 text-center text-white">
+                    <p class="text-2xl">{{ x.traveltime }}</p>
+                    <p class="text-l">min</p>
                   </div>
+                  <!-- <div class="bg-blue-500 text-white rounded-full p-4 relative">
+                    <span>Some text</span>
+                    <span class="after absolute w-0 h-0 border-4 border-blue-500 border-t-0 border-r-0"></span>
+                  </div> -->
+                  
                 </div>
               </a>
             {% endfor %}

@@ -58,18 +58,18 @@ def query_time(route, dt):
         ff_time += temp['freeflow traveltime'].mean() # free flow
         avg_time += temp['average traveltime'].mean() # average
         p95_time += temp['95th percentile'].mean() # 95th percentile
-        # tti.append(temp['Traveltime Index'].mean())
-    # tti = sum(tti)/len(tti)
+        tti.append(temp['Traveltime Index'].mean())
+    tti = sum(tti)/len(tti)
     
-    if not math.isnan(ff_time) or not math.isnan(avg_time) or not math.isnan(p95_time):# or math.isnan(tti):
-        return {'ff_time':round(ff_time), 'avg_time':round(avg_time), 'p95_time':round(p95_time)}#, 'tti':tti}
+    if not math.isnan(ff_time) or not math.isnan(avg_time) or not math.isnan(p95_time) or math.isnan(tti):
+        return {'ff_time':round(ff_time), 'avg_time':round(avg_time), 'p95_time':round(p95_time), 'tti':tti}
     else:
         return {'ff_time':0, 'avg_time':0, 'p95_time':0}#, 'tti':0}
 
 def graph_time(og, ds, time):
-    # set_time = {'time':[], 'tti':[]} #'Fasten':[], 'Most popular':[], 'Suggested':[]}
-    set_time = {'time':[], 'Unsafe':[], 'Usual':[], 'Safe':[]}
-    start = f'{str(time)[:10]} 08:00:00'
+    set_time = {'time':[], 'tti':[], 'Unsafe':[], 'Usual':[], 'Safe':[]}
+    # set_time = {'time':[], 'Unsafe':[], 'Usual':[], 'Safe':[]}
+    start = f'{str(time)[:10]} 10:00:00'
     start = pd.to_datetime(start)
     stop = f'{str(time)[:10]} 21:00:00'
     stop = pd.to_datetime(stop)
@@ -80,7 +80,8 @@ def graph_time(og, ds, time):
         set_time['Unsafe'].append(time['ff_time'])
         set_time['Usual'].append(time['avg_time'])
         set_time['Safe'].append(time['p95_time'])
-        # set_time['tti'].append(time['tti'])
+        set_time['tti'].append(time['tti'])
         start += delta
     return set_time
 
+# print(graph_time('S M', 'C h', datetime.datetime.now()))

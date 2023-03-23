@@ -85,7 +85,7 @@ def visualize(request, plantype):
     add_recent_record(data_temp.og, data_temp.ds, data_temp.traveltime, data_temp.arrv)
     time_graph = graph_time(data_temp.og, data_temp.ds, data_temp.arrv)
     # label = time_graph['time']
-    data = time_graph[plantype]
+    data = time_graph['tti']
 
     og_pos = location.objects.get(name=data_temp.og).geometry.split(',')
     ds_pos = location.objects.get(name=data_temp.ds).geometry.split(',')
