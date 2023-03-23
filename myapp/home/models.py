@@ -30,6 +30,7 @@ class planning_to_visualize(models.Model):
     bar_chart = models.ImageField()
 
 class Planning_temp(models.Model):
+    user_id = models.PositiveIntegerField()
     plantype = models.CharField(max_length=255)
     og = models.CharField(max_length=255)
     start = models.DateTimeField()
@@ -37,3 +38,6 @@ class Planning_temp(models.Model):
     arrv = models.DateTimeField()
     traveltime = models.PositiveIntegerField()
     extratime = models.IntegerField()
+
+class User_id(models.Model):
+    username = models.CharField(max_length=255)

@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from .models import Recentplan, location, Appoint_default, planning_to_visualize, Planning_temp
+from .models import Recentplan, location, Planning_temp, User_id
 from django.urls import reverse
 import datetime
 from .program_func import *
@@ -10,11 +10,15 @@ from .program_func import *
 
 # Create your views here.
 
-def index(request):
+def index(request, user_id):
     # load template
     template = loader.get_template('home.html')
     # get recent data
-    data_recent = Recentplan.objects.last()
+    result_exist = Recentplan.objects.filter(user_id=user_id)
+    if result_exist.exists():
+        data_recent = Recentplan.objects.filter(user_id=user_id).last()
+    else:
+        data_recent = {'origin_name': 'None', 'destin_name': 'None', 'timestamp': 'None'}
     location_data = location.objects.all().values()
     context = {
         'last_data': data_recent,
@@ -26,13 +30,13 @@ def map_home(request):
     template = loader.get_template('map.html')
     return HttpResponse(template.render())
 
-def add_recent_record(og_name, ds_name, avg_time, plantime):
+def add_recent_record(user_id, og_name, ds_name, avg_time, plantime):
     og_pos = location.objects.get(name=og_name)
     ds_pos = location.objects.get(name=ds_name)
-    plan = Recentplan(user_id=123, origin_name=og_name, origin_pos=og_pos, destin_name=ds_name, destin_pos=ds_pos, avg_time=avg_time, timestamp=str(plantime))
+    plan = Recentplan(user_id=user_id, origin_name=og_name, origin_pos=og_pos, destin_name=ds_name, destin_pos=ds_pos, avg_time=avg_time, timestamp=str(plantime))
     plan.save()
 
-def planning(request):
+def planning(request, user_id):
     # load template
     template = loader.get_template('planning.html')
     origin_name = request.POST['origin_plan']
@@ -53,14 +57,14 @@ def planning(request):
     dep_time_p95 = plantime - datetime.timedelta(minutes=p95_time)
 
     # save to planning temp table
-    Planning_temp(plantype='Unsafe', og=origin_name, start=dep_time_ff, ds=destin_name, arrv=plantime, traveltime=ff_time, extratime=ff_time-avg_time).save()
-    Planning_temp(plantype='Usual', og=origin_name, start=dep_time_avg, ds=destin_name, arrv=plantime, traveltime=avg_time, extratime=0).save()
-    Planning_temp(plantype='Safe', og=origin_name, start=dep_time_p95, ds=destin_name, arrv=plantime, traveltime=p95_time,  extratime=p95_time-avg_time).save()
+    Planning_temp(user_id=user_id, plantype='Unsafe', og=origin_name, start=dep_time_ff, ds=destin_name, arrv=plantime, traveltime=ff_time, extratime=ff_time-avg_time).save()
+    Planning_temp(user_id=user_id, plantype='Usual', og=origin_name, start=dep_time_avg, ds=destin_name, arrv=plantime, traveltime=avg_time, extratime=0).save()
+    Planning_temp(user_id=user_id, plantype='Safe', og=origin_name, start=dep_time_p95, ds=destin_name, arrv=plantime, traveltime=p95_time,  extratime=p95_time-avg_time).save()
     
     og_pos = location.objects.get(name=origin_name).geometry.split(',')
     ds_pos = location.objects.get(name=destin_name).geometry.split(',')
 
-    dep_time = Planning_temp.objects.all().order_by('-id')
+    dep_time = Planning_temp.objects.filter(user_id=user_id).all().order_by('-id')
 
     context = {
         'origin_name':origin_name,
@@ -78,11 +82,11 @@ def planning(request):
     }
     return HttpResponse(template.render(context, request))
 
-def visualize(request, plantype):
+def visualize(request, plantype, user_id):
     template = loader.get_template('visualize.html')
 
-    data_temp = Planning_temp.objects.get(plantype=plantype)
-    add_recent_record(data_temp.og, data_temp.ds, data_temp.traveltime, data_temp.arrv)
+    data_temp = Planning_temp.objects.filter(user_id=user_id).get(plantype=plantype)
+    add_recent_record(user_id, data_temp.og, data_temp.ds, data_temp.traveltime, data_temp.arrv)
     time_graph = graph_time(data_temp.og, data_temp.ds, data_temp.arrv)
     # label = time_graph['time']
     data = time_graph['tti']
@@ -116,9 +120,13 @@ def visualize(request, plantype):
 
     return HttpResponse(template.render(context, request))
 
-def recent_plan_seeall(request):
+def recent_plan_seeall(request, user_id):
     template = loader.get_template('recent.html')
-    data = Recentplan.objects.all().order_by('-id')
+    result_exist = Recentplan.objects.filter(user_id=user_id)
+    if result_exist.exists():
+        data = result_exist.all().order_by('-id')
+    else:
+        data = {'origin_name': 'None', 'destin_name': 'None', 'timestamp': 'None'}
     context = {
         'recent_data': data
     }
@@ -128,10 +136,32 @@ def soon(request):
     template = loader.get_template('comingsoon.html')
     return HttpResponse(template.render())
 
-def back_to_home(request):
-    Planning_temp.objects.all().delete()
-    return HttpResponseRedirect(reverse('index_home'))
+def back_to_home(request, user_id):
+    Planning_temp.objects.filter(user_id=user_id).all().delete()
+    url = reverse('index_home', kwargs={'user_id':user_id})
+    return HttpResponseRedirect(url)
 
-def reset_temp_data(request):
-    Planning_temp.objects.all().delete()
-    return HttpResponseRedirect(reverse('index_home'))
+def reset_temp_data(request, user_id):
+    Planning_temp.objects.filter(user_id=user_id).all().delete()
+    url = reverse('index_home', kwargs={'user_id':user_id})
+    return HttpResponseRedirect(url)
+
+def login(request):
+    template = loader.get_template('login.html')
+    return HttpResponse(template.render())
+
+def loggedin(request):
+    template = loader.get_template('loggedin.html')
+    username = request.POST['username']
+    result_exist = User_id.objects.filter(username=username)
+    if result_exist.exists():
+        user_id = User_id.objects.get(username=username).id
+    else:
+        User_id(username=username).save()
+        user_id = User_id.objects.get(username=username).id
+    context = {
+        'user_id': user_id,
+        'username': username
+    }
+    return HttpResponse(template.render(context, request))
+    
