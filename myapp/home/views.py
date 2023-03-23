@@ -153,15 +153,28 @@ def login(request):
 def loggedin(request):
     template = loader.get_template('loggedin.html')
     username = request.POST['username']
+    password = request.POST['password']
     result_exist = User_id.objects.filter(username=username)
     if result_exist.exists():
         user_id = User_id.objects.get(username=username).id
-    else:
-        User_id(username=username).save()
-        user_id = User_id.objects.get(username=username).id
-    context = {
-        'user_id': user_id,
-        'username': username
-    }
-    return HttpResponse(template.render(context, request))
-    
+        if password == result_exist.get(username=username).password:
+            context = {
+                'user_id': user_id,
+                'username': username
+            }
+            return HttpResponse(template.render(context, request))
+        else:
+            return HttpResponseRedirect(reverse('login'))
+    else: return HttpResponseRedirect(reverse('login'))
+
+def register(request):
+    template = loader.get_template('register.html')
+    return HttpResponse(template.render())
+
+def regist(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    checkpass = request.POST['checkpass']
+    result_exist = User_id.objects.filter(username=username)
+    User_id(username=username, password=password).save()
+    return HttpResponseRedirect(reverse('login'))
