@@ -64,7 +64,7 @@ def query_time(route, dt):
     if not math.isnan(ff_time) or not math.isnan(avg_time) or not math.isnan(p95_time) or math.isnan(tti):
         return {'ff_time':round(ff_time), 'avg_time':round(avg_time), 'p95_time':round(p95_time), 'tti':tti}
     else:
-        return {'ff_time':0, 'avg_time':0, 'p95_time':0}#, 'tti':0}
+        return {'ff_time':0, 'avg_time':0, 'p95_time':0, 'tti':0}
 
 def graph_time(og, ds, time):
     set_time = {'time':[], 'tti':[], 'Unsafe':[], 'Usual':[], 'Safe':[]}

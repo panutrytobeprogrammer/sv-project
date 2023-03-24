@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+from django.contrib.auth import authenticate, login
 from .models import Recentplan, location, Planning_temp, User_id
 from django.urls import reverse
 import datetime
@@ -47,6 +48,8 @@ def planning(request, user_id):
     destin_s = s_name(destin_name)
 
     # query time
+    if pd.isna(pd.Timestamp(plantime)):
+        plantime = datetime.datetime.now() + datetime.timedelta(hours=7)
     plantime = pd.to_datetime(plantime)
     time = query_time(route=f'{origin_s}_{destin_s}', dt=plantime)
     ff_time = time['ff_time']
@@ -179,3 +182,18 @@ def regist(request):
     result_exist = User_id.objects.filter(username=username)
     User_id(username=username, password=password).save()
     return HttpResponseRedirect(reverse('login'))
+
+
+# def login_view(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             return redirect('home')
+#         else:
+#             error_message = "Invalid username or password."
+#     else:
+#         error_message = ""
+#     return render(request, 'login.html', {'error_message': error_message})
