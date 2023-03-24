@@ -37,6 +37,7 @@ def add_recent_record(user_id, og_name, ds_name, avg_time, plantime):
     plan.save()
 
 def planning(request, user_id):
+    Planning_temp.objects.filter(user_id=user_id).all().delete()
     # load template
     template = loader.get_template('planning.html')
     origin_name = request.POST['origin_plan']
