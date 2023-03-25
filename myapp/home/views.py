@@ -27,7 +27,7 @@ def index(request, user_id):
     }
     return HttpResponse(template.render(context, request))
 
-def map_home(request):
+def map_home(request, user_id):
     template = loader.get_template('map.html')
     return HttpResponse(template.render())
 
@@ -136,7 +136,7 @@ def recent_plan_seeall(request, user_id):
     }
     return HttpResponse(template.render(context, request))
 
-def soon(request):
+def soon(request, user_id):
     template = loader.get_template('comingsoon.html')
     return HttpResponse(template.render())
 

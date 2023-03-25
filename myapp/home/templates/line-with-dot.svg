@@ -1,0 +1,12 @@
+<?xml version="1.0"?><svg width="640" height="480" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
+ <g>
+  <title>Layer 1</title>
+  <defs>
+   <marker refY="50" refX="50" markerHeight="5" markerWidth="10" viewBox="0 0 100 100" se_type="mcircle" orient="auto" markerUnits="strokeWidth" id="se_marker_start_svg_1">
+    <circle stroke-width="5" stroke="#47a6ab" fill="#47a6ab" cy="50" cx="50" r="30"/>
+   </marker>
+  </defs>
+  <path marker-start="url(#se_marker_start_svg_1)" d="m189,179c3,0 4,0 8,0c6,0 66,2 144,2l11,0" id="svg_1" stroke-width="20" stroke="#47a6ab" fill="none"/>
+ </g>
+</svg>
