@@ -12,6 +12,7 @@ from .program_func import *
 # Create your views here.
 
 def index(request, user_id):
+    print(f'{datetime.datetime.now()}: index_process')
     # load template
     template = loader.get_template('home.html')
     # get recent data
@@ -28,6 +29,7 @@ def index(request, user_id):
     return HttpResponse(template.render(context, request))
 
 def map_home(request, user_id):
+    print(f'{datetime.datetime.now()}: map')
     template = loader.get_template('map.html')
     return HttpResponse(template.render())
 
@@ -38,6 +40,7 @@ def add_recent_record(user_id, og_name, ds_name, avg_time, plantime):
     plan.save()
 
 def planning(request, user_id):
+    print(f'{datetime.datetime.now()}: planning start')
     Planning_temp.objects.filter(user_id=user_id).all().delete()
     # load template
     template = loader.get_template('planning.html')
@@ -51,7 +54,7 @@ def planning(request, user_id):
     if pd.isna(pd.Timestamp(plantime)):
         plantime = datetime.datetime.now() + datetime.timedelta(hours=7)
     plantime = pd.to_datetime(plantime)
-    time = query_time(route=f'{origin_s}_{destin_s}', dt=plantime)
+    time = query_time_v2(route=f'{origin_s}_{destin_s}', dt=plantime)
     ff_time = time['ff_time']
     avg_time = time['avg_time']
     p95_time = time['p95_time']
@@ -84,9 +87,11 @@ def planning(request, user_id):
         'ds_pos_lon': ds_pos[1][:-1],
         'ds_pos_lat': ds_pos[0][1:],
     }
+    print(f'{datetime.datetime.now()}: planning end')
     return HttpResponse(template.render(context, request))
 
 def visualize(request, plantype, user_id):
+    print(f'{datetime.datetime.now()}: visualize start')
     template = loader.get_template('visualize.html')
 
     data_temp = Planning_temp.objects.filter(user_id=user_id).get(plantype=plantype)
@@ -121,7 +126,7 @@ def visualize(request, plantype, user_id):
         'ttt':ttt,
         'extratime':extratime,
     }
-
+    print(f'{datetime.datetime.now()}: visualize end')
     return HttpResponse(template.render(context, request))
 
 def recent_plan_seeall(request, user_id):
@@ -197,3 +202,19 @@ def regist(request):
 #     else:
 #         error_message = ""
 #     return render(request, 'login.html', {'error_message': error_message})
+
+# def save_data(request):
+#     df = pd.read_csv('home/df_varandma.csv')
+#     for i,row in df.iterrows():
+#         From = row['from']
+#         End = row['end']
+#         days = row['days']
+#         time = row['time']
+#         ff = row['freeflow traveltime']
+#         avg = row['average traveltime']
+#         p95 = row['95th percentile']
+#         tti = row['Traveltime Index']
+#         year = row['year']
+#         Varandma(From=From, End=End, days=days, time=time, ff=ff, avg=avg, p95=p95, tti=tti, year=year).save()
+#         print(datetime.datetime.now(), ': round', i)
+#     return HttpResponseRedirect(reverse('login'))

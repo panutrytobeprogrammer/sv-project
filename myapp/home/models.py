@@ -42,3 +42,14 @@ class Planning_temp(models.Model):
 class User_id(models.Model):
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=12)
+
+class Varandma(models.Model):
+    From = models.CharField(max_length=255)
+    End = models.CharField(max_length=255)
+    days = models.CharField(max_length=8)
+    time = models.TimeField()
+    ff = models.FloatField()
+    avg = models.FloatField()
+    p95 = models.FloatField()
+    tti = models.FloatField()
+    year = models.PositiveIntegerField()

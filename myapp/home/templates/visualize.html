@@ -131,13 +131,24 @@
                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                 <script>
                     const ctx = document.getElementById('myChart');
+                    const color_list = [];
+                    const d = new Date();
+                    const label_time = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
+                    for (let i = 0; i<11; i++) {
+                        if (d.getHours().toString === label_time.slice(i).slice(0,2)) {
+                            color_list.push("rgba(71, 166, 171, 1)")
+                        } else {
+                            color_list.push("rgba(71, 166, 171, 0.7)")
+                        }
+                    }
                     new Chart(ctx, {
                         type: 'bar',
                         data: {
-                        labels: ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'],
+                        labels: label_time,
                         datasets: [{
                             label: 'Congestion',
                             data: JSON.parse('{{ data }}'),
+                            backgroundColor: color_list,
                             borderWidth: 0
                         }]
                         },
