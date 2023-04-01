@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-i6g8+cs99f=m50(ddq27=e^*z^c4*v4d$uh7l=nvaycb4mq-ak'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['ec91-2403-6200-88a4-bf03-3965-7212-7a0f-76a.ap.ngrok.io']
+ALLOWED_HOSTS = ['b9e3-2403-6200-88a2-5a3-30aa-b498-e0ba-f04c.ap.ngrok.io']
 
 
 # Application definition
@@ -111,7 +111,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

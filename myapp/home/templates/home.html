@@ -26,14 +26,14 @@
                             <a class="text-white font-thin hover:font-normal focus:font-normal">Round Trip</a>
                         </div> -->
                         <div class="col-end-9 col-span-1 justify-end">
-                            <button class="fa-regular fa-map text-white text-2xl hover:font-semibold focus:font-bold" onclick="window.location='map/'"></button>
+                            <!-- <button class="fa-regular fa-map text-white text-2xl hover:font-semibold focus:font-bold" onclick="window.location='map/'"></button> -->
                         </div>
                     </div>
                     <form action="planning/" method="post" class="space-y-3">
                         {% csrf_token %}
                         <div class="relative bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
                             <i class="fa-solid fa-circle pr-3 text-[#47a6ab]"></i>
-                            <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser" name="origin_plan">
+                            <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser_og" name="origin_plan">
                                 {% for x in location_data %}
                                 <option class="truncate" value="{{ x.name }}">{{ x.name }}</option>
                                 {% endfor %}
@@ -41,16 +41,34 @@
                         </div>
                         <div class="relative bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
                             <i class="fa-solid fa-location-dot pl-0.5 pr-3.5 text-[#FF370D]"></i>
-                            <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser" name="destination_plan">
+                            <select class="text-sm border-none bg-white sm:mx-auto" placeholder="Current Location" id="browser_ds" name="destination_plan">
                                 {% for x in location_data %}
                                 <option class="truncate" value="{{ x.name }}">{{ x.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="relative bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
-                            <i class="fa-regular fa-calendar pl-0.5 pr-3.5 text-[#FFD816]"></i>
-                            <input type="datetime-local" id="plantime" name="plantime" class="border-none">
-                            <!-- <a class="text-sm">Today, Now.</a> -->
+                        <p class="text-red font-light" id="text_warn_ogds"></p>
+                        <!-- <script>
+                            function check_ogds() {
+                                const og = document.getElementById('browser_og')
+                                const ds = document.getElementById('browser_ds')
+                                const pogds = document.getElementById('text_warn_ogds')
+                                if (og == ds) {
+                                    pogds.innerHTML = '* your origin and destination must not same'
+                                }
+                            }
+                            check_ogds();
+                        </script> -->
+                        <div class="grid grid-cols-12 gap-1 bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
+                            <div class="col-span-8">
+                                <i class="fa-regular fa-calendar pl-0.5 pr-3.5 text-[#FFD816]"></i>
+                                <input type="date" id="plantime_date" name="plantime_date" class="border-none w-[80%] text-[14px]">
+                                <!-- <a class="text-sm">Today, Now.</a> -->
+                            </div>
+                            <div class="col-start-9 border-l-[1px]">
+                                <!-- <i class="fa-regular fa-clock pl-0.5 pr-2 text-[#FFD816]"></i> -->
+                                <input type="time" min="06:00:00" max="21:00:00" id="plantime_time" name="plantime_time" class="ml-3 border-none w-20 text-[14px]" onchange="check_time();">
+                            </div>
                         </div>
                         <input type="submit" value="Next" class="flex bg-black text-white justify-center px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">
                     </form>    

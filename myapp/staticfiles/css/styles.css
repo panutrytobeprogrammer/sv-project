@@ -28,3 +28,13 @@
   .tooltip:hover .tooltiptext {
     visibility: visible;
   }
+
+  /* Line 22 */
+/* 
+position: absolute;
+width: 41px;
+height: 0px;
+left: 116px;
+top: 395.5px;
+
+border: 1px solid #47A6AB; */

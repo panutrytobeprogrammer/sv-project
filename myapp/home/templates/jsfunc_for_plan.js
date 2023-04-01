@@ -69,3 +69,27 @@ function checkplan() {
         console.log('true');
     }
 }
+
+function check_time() {
+    const datetime = document.getElementById('plantime');
+    const datetimeValue = datetime.value
+    const now = new Date(datetimeValue);
+
+    const minTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0);
+    const minTimeString = minTime.toISOString().slice(0, -1); // Remove the Z from the end
+
+    const maxTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 21, 0, 0);
+    const maxTimeString = maxTime.toISOString().slice(0, -1); // Remove the Z from the end
+
+    datetime.setAttribute('min', minTimeString)
+    datetime.setAttribute('max', maxTimeString)
+
+
+    // const checkky = new Date(datetimeValue);
+    // console.log(checkky)
+    // if (minTime <= checkky <= maxTime) {
+    //     text_check.innerHTML = ''
+    // } else {
+    //     text_check.innerHTML = 'please input time between 6AM to 9PM'
+    // }
+} 

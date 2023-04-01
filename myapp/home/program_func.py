@@ -41,7 +41,7 @@ def query_time(route, dt):
         'qs_ch': ['แยกศาลาแดง', 'แยกวิทยุ', 'แยกคลองเตย', 'แยกพระรามที่ 4'][-1::-1],
         'qs_lp': ['แยกราชดำริ', 'แยกศาลาแดง', 'แยกวิทยุ', 'แยกคลองเตย', 'แยกพระรามที่ 4'][-1::-1]
     }
-    df = pd.read_csv('home/df_varandma.csv')
+    df = pd.read_csv('home/processed_data.csv')
     # dt = datetime.datetime.now()
     time = dt.strftime("%H:%M:%S")
     time = time[:4]+'0:00'
@@ -60,6 +60,7 @@ def query_time(route, dt):
         avg_time += temp['average traveltime'].mean() # average
         p95_time += temp['95th percentile'].mean() # 95th percentile
         tti.append(temp['Traveltime Index'].mean())
+        print(f'ff_time: {ff_time}, avg_time: {avg_time}, p95_time: {p95_time}, tti: {tti}')
     tti = sum(tti)/len(tti)
     
     if not math.isnan(ff_time) or not math.isnan(avg_time) or not math.isnan(p95_time) or not math.isnan(tti):
@@ -104,6 +105,9 @@ def query_time_v2(route, dt):
     }
     all_data = Varandma.objects
     time = dt.strftime("%H:%M:%S")
+    h,m,s = [int(e) for e in time.split(':')]
+    if datetime.time(h,m,s) < datetime.time(6,0,0) or datetime.time(h,m,s) > datetime.time(21,0,0):
+        return {'ff_time':0, 'avg_time':0, 'p95_time':0, 'tti':0}
     time = time[:4]+'0:00'
     dt = pd.to_datetime(dt)
     day = diff(dt.date())
@@ -115,8 +119,8 @@ def query_time_v2(route, dt):
 
     a = line[route]
     for i in range(len(a)-1):
-        temp1 = all_data.filter(From=a[i], End=a[i+1], days=day, time=time).get(year=2019)
-        temp2 = all_data.filter(From=a[i], End=a[i+1], days=day, time=time).get(year=2020)
+        temp1 = all_data.filter(From=a[i], End=a[i+1], days=day, year=2019).get(time=time)
+        temp2 = all_data.filter(From=a[i], End=a[i+1], days=day, year=2020).get(time=time)
         # temp = df[(df['from']==a[i]) & (df['end']==a[i+1]) & (df['days']==day) & (df['time']==time)]
         ff_time += (temp1.ff + temp2.ff)/2 # free flow
         avg_time += (temp1.avg + temp2.avg)/2 # average

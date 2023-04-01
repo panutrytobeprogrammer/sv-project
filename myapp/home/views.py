@@ -2,11 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.contrib.auth import authenticate, login
-from .models import Recentplan, location, Planning_temp, User_id
+from .models import Recentplan, location, Planning_temp, User_id, Varandma
 from django.urls import reverse
 import datetime
 from .program_func import *
-
 
 
 # Create your views here.
@@ -46,13 +45,25 @@ def planning(request, user_id):
     template = loader.get_template('planning.html')
     origin_name = request.POST['origin_plan']
     destin_name = request.POST['destination_plan']
-    plantime = request.POST['plantime']
+    plantime_date = request.POST['plantime_date']
+    print('date:', plantime_date)
+    plantime_time = request.POST['plantime_time']
+    print('time:', plantime_time)
     origin_s = s_name(origin_name)
     destin_s = s_name(destin_name)
 
-    # query time
-    if pd.isna(pd.Timestamp(plantime)):
+    # if pd.isna(pd.Timestamp(plantime_date)) or pd.isna(pd.Timestamp(plantime_time)):
+    #     plantime = datetime.datetime.now() + datetime.timedelta(hours=7)
+    if len(plantime_date) == 0 and len(plantime_time) == 0:
         plantime = datetime.datetime.now() + datetime.timedelta(hours=7)
+    elif len(plantime_time) == 0:
+        plantime = f'{plantime_date} {(datetime.datetime.now() + datetime.timedelta(hours=7)).time()}'
+    elif len(plantime_date) == 0:
+        plantime = f'{datetime.datetime.now().date()} {plantime_time}'
+    else:
+        plantime = pd.to_datetime(f'{plantime_date} {plantime_time}')
+
+    # query time
     plantime = pd.to_datetime(plantime)
     time = query_time_v2(route=f'{origin_s}_{destin_s}', dt=plantime)
     ff_time = time['ff_time']
@@ -64,14 +75,14 @@ def planning(request, user_id):
     dep_time_p95 = plantime - datetime.timedelta(minutes=p95_time)
 
     # save to planning temp table
-    Planning_temp(user_id=user_id, plantype='Unsafe', og=origin_name, start=dep_time_ff, ds=destin_name, arrv=plantime, traveltime=ff_time, extratime=ff_time-avg_time).save()
-    Planning_temp(user_id=user_id, plantype='Usual', og=origin_name, start=dep_time_avg, ds=destin_name, arrv=plantime, traveltime=avg_time, extratime=0).save()
-    Planning_temp(user_id=user_id, plantype='Safe', og=origin_name, start=dep_time_p95, ds=destin_name, arrv=plantime, traveltime=p95_time,  extratime=p95_time-avg_time).save()
+    Planning_temp(user_id=user_id, plantype='Safe time', og=origin_name, start=dep_time_p95, ds=destin_name, arrv=plantime, traveltime=p95_time,  extratime=p95_time-avg_time).save()
+    Planning_temp(user_id=user_id, plantype='Usual time', og=origin_name, start=dep_time_avg, ds=destin_name, arrv=plantime, traveltime=avg_time, extratime=0).save()
+    Planning_temp(user_id=user_id, plantype='Unsafe time', og=origin_name, start=dep_time_ff, ds=destin_name, arrv=plantime, traveltime=ff_time, extratime=ff_time-avg_time).save()
     
     og_pos = location.objects.get(name=origin_name).geometry.split(',')
     ds_pos = location.objects.get(name=destin_name).geometry.split(',')
 
-    dep_time = Planning_temp.objects.filter(user_id=user_id).all().order_by('-id')
+    dep_time = Planning_temp.objects.filter(user_id=user_id).all()
 
     context = {
         'origin_name':origin_name,
@@ -104,9 +115,9 @@ def visualize(request, plantype, user_id):
     ds_pos = location.objects.get(name=data_temp.ds).geometry.split(',')
 
     extratime = data_temp.extratime
-    if plantype == 'Unsafe':
+    if plantype[:6] == 'Unsafe':
         txt_et = f'Save {abs(extratime)} min'
-    elif plantype == 'Safe':
+    elif plantype[:4] == 'Safe':
         txt_et = f'Extra time {extratime} min'
     else:
         txt_et = 'No extra time'
