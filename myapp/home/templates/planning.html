@@ -74,29 +74,26 @@
                 <div class="col-start-1 col-span-2 px-6">
                   <div class="relative space-y-3">
                     <div class="flex rounded-3xl">
-                        <div class="tooltip text-[14px] text-[#47a6ab] font-light bg-white py-2 px-4 rounded-2xl tooltip" id="plantype">{{ x.plantype }}
-                          <i class="mt-1 fa-solid fa-circle-info"></i>
-                          <span class="tooltiptext" id="dscrp_detail"></span>
-                          <!-- <script>
-                            function checkplan(plantype) {
-                              // console.log(plantype)
-                              var dscrp_detail = document.getElementById('dscrp_detail')
-                              var plantype = document.getElementById('plantype')
-                              // console.log(dscrp_detail)
-                              if (plantype == 'Safe time') {
-                                  dscrp_detail.innerHTML = 'If your appointment is important, this planning time is safe for you to arrive on time.';
-                                  // console.log(plantype)
-                              } else if (plantype == 'Unsafe time') {
-                                  dscrp_detail.innerHTML = 'Pleng is thinking about this meaning. Best is waiting for Pleng to think about it.';
-                                  // console.log(plantype)
-                              } else {
-                                  dscrp_detail.innerHTML = 'Pleng is thinking about this meaning. Best is waiting for Pleng to think about it.';
-                                  // console.log(plantype)
-                              }
+                        <div class="flex tooltip text-[14px] text-[#47a6ab] font-light bg-white py-2 px-4 rounded-2xl tooltip">
+                          {{x.plantype}}
+                          <i class="mt-1 ml-2 fa-solid fa-circle-info"></i>
+                          <span class="tooltiptext" id="dscrp_detail_{{x.plantype}}"></span>
+                        </div>  
+                        <script>
+                          function checkplan() {
+                            dscrp_detail = document.getElementById('dscrp_detail_{{x.plantype}}')
+                            plantype = "{{ x.plantype }}".slice(0,4)
+
+                            if (plantype == 'Safe') {
+                                dscrp_detail.innerHTML = 'If your appointment is important, this planning time is safe for you to arrive on time.';
+                            } else if (plantype == 'Usua') {
+                                dscrp_detail.innerHTML = 'Pleng is thinking about this meaning. Best is waiting for Pleng to think about it.';
+                            } else {
+                                dscrp_detail.innerHTML = 'Pleng is thinking about this meaning. Best is waiting for Pleng to think about it.';
                             }
-                            // checkplan()
-                          </script> -->
-                        </div>    
+                          }
+                          checkplan();
+                        </script>  
                     </div>
                     <div class="pb-5">
                       <div class="grid grid-cols-3 gap-1">

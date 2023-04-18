@@ -71,7 +71,7 @@ def query_time(route, dt):
 def graph_time(og, ds, time):
     set_time = {'time':[], 'tti':[], 'Unsafe':[], 'Usual':[], 'Safe':[]}
     # set_time = {'time':[], 'Unsafe':[], 'Usual':[], 'Safe':[]}
-    start = f'{str(time)[:10]} 10:00:00'
+    start = f'{str(time)[:10]} 6:00:00'
     start = pd.to_datetime(start)
     stop = f'{str(time)[:10]} 21:00:00'
     stop = pd.to_datetime(stop)

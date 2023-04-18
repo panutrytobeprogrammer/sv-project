@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 class Recentplan(models.Model):
@@ -53,3 +54,6 @@ class Varandma(models.Model):
     p95 = models.FloatField()
     tti = models.FloatField()
     year = models.PositiveIntegerField()
+
+# class User(AbstractUser):
+#     user_key_id = models.CharField(max_length=8)
