@@ -15,4 +15,8 @@ urlpatterns = [
     path('loggedin/<int:user_id>/planning/', views.planning, name='planning'),
     path('loggedin/<int:user_id>/planning/visualize/<str:plantype>', views.visualize, name='visualize'),
     path('loggedin/<int:user_id>/planning/visualize/done/', views.back_to_home, name='done'),
+    path('loggedin/<int:user_id>/recentplanning/<int:plan_id>', views.planrecent, name='plannrecent'),
+    path('loggedin/<int:user_id>/planning/<int:plan_id>', views.planningfromrecent, name='planningfromrecent'),
+    # path('loggedin/<int:user_id>/<int:plan_id>/planning/visualize/<str:plantype>', views.visualize, name='visualize'),
+    # path('loggedin/<int:user_id>/<int:plan_id>/planning/visualize/done/', views.back_to_home, name='done'),
 ]

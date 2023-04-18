@@ -199,6 +199,78 @@ def regist(request):
     User_id(username=username, password=password).save()
     return HttpResponseRedirect(reverse('login'))
 
+def planrecent(request, user_id, plan_id):
+    template = loader.get_template('planrecent.html')
+    temp = Recentplan.objects.get(id=plan_id)
+    context = {
+        'plan_temp': temp,
+        'plan_id': plan_id
+    }
+    return HttpResponse(template.render(context, request))
+
+def planningfromrecent(request, user_id, plan_id):
+    Planning_temp.objects.filter(user_id=user_id).all().delete()
+    # load template
+    template = loader.get_template('planning.html')
+
+    temp = Recentplan.objects.get(id=plan_id)
+
+    origin_name = temp.origin_name
+    destin_name = temp.destin_name
+    plantime_date = request.POST['plantime_date']
+    print('date:', plantime_date)
+    plantime_time = request.POST['plantime_time']
+    print('time:', plantime_time)
+    origin_s = s_name(origin_name)
+    destin_s = s_name(destin_name)
+
+    if len(plantime_date) == 0 and len(plantime_time) == 0:
+        plantime = datetime.datetime.now() + datetime.timedelta(hours=7)
+    elif len(plantime_time) == 0:
+        plantime = f'{plantime_date} {(datetime.datetime.now() + datetime.timedelta(hours=7)).time()}'
+    elif len(plantime_date) == 0:
+        plantime = f'{datetime.datetime.now().date()} {plantime_time}'
+    else:
+        plantime = pd.to_datetime(f'{plantime_date} {plantime_time}')
+
+    # query time
+    plantime = pd.to_datetime(plantime)
+    time = query_time_v2(route=f'{origin_s}_{destin_s}', dt=plantime)
+    ff_time = time['ff_time']
+    avg_time = time['avg_time']
+    p95_time = time['p95_time']
+
+    dep_time_ff = plantime - datetime.timedelta(minutes=ff_time)
+    dep_time_avg = plantime - datetime.timedelta(minutes=avg_time)
+    dep_time_p95 = plantime - datetime.timedelta(minutes=p95_time)
+
+    # save to planning temp table
+    Planning_temp(user_id=user_id, plantype='Safe time', og=origin_name, start=dep_time_p95, ds=destin_name, arrv=plantime, traveltime=p95_time,  extratime=p95_time-avg_time).save()
+    Planning_temp(user_id=user_id, plantype='Usual time', og=origin_name, start=dep_time_avg, ds=destin_name, arrv=plantime, traveltime=avg_time, extratime=0).save()
+    Planning_temp(user_id=user_id, plantype='Unsafe time', og=origin_name, start=dep_time_ff, ds=destin_name, arrv=plantime, traveltime=ff_time, extratime=ff_time-avg_time).save()
+    
+    og_pos = location.objects.get(name=origin_name).geometry.split(',')
+    ds_pos = location.objects.get(name=destin_name).geometry.split(',')
+
+    dep_time = Planning_temp.objects.filter(user_id=user_id).all()
+
+    context = {
+        'origin_name':origin_name,
+        'destin_name':destin_name,
+        'time':time,
+        'now':plantime.strftime('%H:%M'),
+        'dep_time_ff':dep_time_ff.strftime('%H:%M'),
+        'dep_time_avg':dep_time_avg.strftime('%H:%M'),
+        'dep_time_p95':dep_time_p95.strftime('%H:%M'),
+        'dep_time': dep_time,
+        'og_pos_lon': og_pos[1][:-1],
+        'og_pos_lat': og_pos[0][1:],
+        'ds_pos_lon': ds_pos[1][:-1],
+        'ds_pos_lat': ds_pos[0][1:],
+    }
+    print(f'{datetime.datetime.now()}: planning end')
+    return HttpResponse(template.render(context, request))
+
 
 # def login_view(request):
 #     if request.method == 'POST':

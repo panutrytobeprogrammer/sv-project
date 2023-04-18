@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/e18a3893e1.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <form action="../planning/{{plan_id}}" method="post">
+    {% csrf_token %}
+        <div class="bg-gradient-to-br from-cyan-100 to-red-100 min-h-screen">
+            <div class="relative bg-[#47a6ab] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl sm:px-10 space-y-4">
+                <div class="flex">
+                    <a class="ml-4 p-5 fa-solid fa-circle-chevron-left text-[rgb(255,255,255,0.82)] text-[36px] hover:text-[#00000]" href="../"></a>
+                    <p class="py-5 text-white text-2xl font-semibold">Planning</p>
+                </div>
+                <div class="relative bg-[rgb(255,255,255,0.47)] p-6 shadow-xl ring-1 ring-gray-900/5 rounded-3xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10">
+                    <p class="text-xl font-semibold ml-4 text-white">Recent places</p>
+                    <br>
+                    <div class="relative bg-white p-6 shadow-xl ring-1 ring-gray-900/5 rounded-3xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10" value="{{ x }}">
+                        <!-- <p class="text-right text-[11px]">
+                            {{ x.timestamp|date:"j F, H:i" }}
+                        </p> -->
+                        <div class="flex flex-col space-y-4">
+                            <div class="flex">
+                                <i class="fa-solid fa-circle pr-3 text-[#47a6ab]"></i>
+                                <p class="text-sm ml-3" name="origin_plan" value="{{plan_temp.origin_name}}">
+                                    {{ plan_temp.origin_name }}
+                                </p>
+                            </div>
+                            <i class="fa-solid fa-ellipsis-vertical ml-1.5 text-[#8c8c8c]"></i>
+                            <div class="flex">
+                                <i class="fa-solid fa-location-dot pl-0.5 pr-3.5 text-[#FF370D]"></i>
+                                <p class="text-sm ml-3" name="destination_plan" value="{{plan_temp.destin_name}}">
+                                    {{ plan_temp.destin_name }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative bg-[rgb(255,255,255,0.47)] px-6 py-6 shadow-xl ring-1 ring-gray-900/5 rounded-3xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10">
+                    <p class="text-xl font-semibold ml-4 text-white">Set arrival time</p>
+                    <br>
+                    <div class="grid grid-cols-12 gap-1 bg-white px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-2xl sm:px-10">
+                        <div class="col-span-8">
+                            <i class="fa-regular fa-calendar pl-0.5 pr-3.5 text-[#FFD816]"></i>
+                            <input type="date" id="plantime_date" name="plantime_date" class="border-none w-[80%] text-[14px]">
+                            <!-- <a class="text-sm">Today, Now.</a> -->
+                        </div>
+                        <div class="col-start-9 border-l-[1px]">
+                            <!-- <i class="fa-regular fa-clock pl-0.5 pr-2 text-[#FFD816]"></i> -->
+                            <input type="time" min="06:00:00" max="21:00:00" id="plantime_time" name="plantime_time" class="ml-3 border-none w-20 text-[14px]" onchange="check_time();">
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" value="Next" class="flex bg-black text-white justify-center px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">
+            </div>
+        </div>
+        
+    </form>
+</body>
+</html>

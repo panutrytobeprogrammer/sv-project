@@ -10,32 +10,37 @@
 </head>
 <body>
     <div class="bg-gradient-to-br from-cyan-100 to-red-100 min-h-screen">
-        <div class="relative bg-[#47a6ab] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl sm:px-10 space-y-3">
+        <div class="relative bg-[#47a6ab] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-b-3xl sm:px-10 space-y-4">
             <a class="ml-4 p-5 fa-solid fa-circle-chevron-left text-[rgb(255,255,255,0.82)] text-[36px] hover:text-[#00000]" href="../"></a>
             <p class="ml-4 text-white text-2xl font-semibold">Recent Plan</p>
-            <table border="0">
+            <br>
             {% for x in recent_data %}
-                <div class="relative bg-[#e8f8fb] px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-3xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10">
-                    <a>
-                        
+            <a class="" href="../recentplanning/{{ x.id }}">
+                <div class="relative bg-[#e8f8fb] px-4 py-4 shadow-xl ring-1 ring-gray-900/5 rounded-3xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10" value="{{ x }}">
+                    <!-- <a href="recentplanning/"> -->
                         <p class="text-right text-[11px]">
                             {{ x.timestamp|date:"j F, H:i" }}
                         </p>
-                        <i class="fa-solid fa-circle pr-3 text-[#47a6ab]"></i>
-                        <a class="text-sm ml-3">
-                            {{ x.origin_name }}
-                        </a>
-                        <br>
-                        <i class="fa-solid fa-ellipsis-vertical ml-1.5 text-[#8c8c8c]"></i>
-                        <br>
-                        <i class="fa-solid fa-location-dot pl-0.5 pr-3.5 text-[#FF370D]"></i>
-                        <a class="text-sm ml-3">
-                            {{ x.destin_name }}
-                        </a>
-                    </a>
+                        <div class="flex flex-col space-y-4">
+                            <div class="flex">
+                                <i class="fa-solid fa-circle pr-3 text-[#47a6ab]"></i>
+                                <p class="text-sm ml-3">
+                                    {{ x.origin_name }}
+                                </p>
+                            </div>
+                            <i class="fa-solid fa-ellipsis-vertical ml-1.5 text-[#8c8c8c]"></i>
+                            <div class="flex">
+                                <i class="fa-solid fa-location-dot pl-0.5 pr-3.5 text-[#FF370D]"></i>
+                                <p class="text-sm ml-3">
+                                    {{ x.destin_name }}
+                                </p>
+                            </div>
+                        </div>
+                    <!-- </a> -->
                 </div>
+                <br>
+            </a>
             {% endfor %}
-            </table>
         </div>
     </div>
 </body>
