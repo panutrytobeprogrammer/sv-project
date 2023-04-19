@@ -133,9 +133,10 @@
                     const ctx = document.getElementById('myChart');
                     const color_list = [];
                     const d = document.getElementById('timenow').innerHTML.split(':')[0]
-                    const label_time = ['6:00', '7:00', '8:00', '9:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
+                    const label_time_color = ['6:00', '7:00', '8:00', '9:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
+                    const label_time = ['6:00', '', '', '9:00','', '', '12:00', '', '', '15:00', '', '', '18:00', '', '', '21:00'];
                     for (let i = 0; i<16; i++) {
-                        if (d === label_time[i].split(':')[0]) {
+                        if (d === label_time_color[i].split(':')[0]) {
                             color_list.push("rgba(71, 166, 171, 1)")
                         } else {
                             color_list.push("rgba(71, 166, 171, 0.6)")
@@ -146,7 +147,7 @@
                     new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: label_time,
+                            labels: label_time_color,
                             datasets: [{
                                 label: 'Congestion',
                                 data: JSON.parse('{{ data }}'),
@@ -157,10 +158,15 @@
                         options: {
                             scales: {
                                 y: {
+                                    ticks: {
+                                        precision: 0
+                                    },
+                                    type: 'linear',
+                                    grace: '100%',
                                     beginAtZero: true,
                                     grid: {
                                         display: false
-                                }
+                                    }
                                 },
                                 x: {
                                     grid: {
@@ -200,8 +206,11 @@
             </div>
 
             <!-- done -->
-            <div class="flex justify-center">
-                <a class="bg-black text-white text-2xl px-5 py-3 rounded-2xl" href="done/">Done</a>
+            <div class="grid grid-cols-5 gap-4">
+                <a class="grid col-span-2 bg-white px-5 py-3 ring-1 ring-[rgb(255,255,255,0.9)] rounded-2xl shadow-2xl w-full text-center" onclick="history.back()">
+                    <p class="fa-solid fa-chevron-left text-2xl"></p>
+                </a>
+                <a class="grid col-span-3 bg-black text-white text-2xl text-center px-5 py-3 rounded-2xl w-full" href="done/">Done</a>
             </div>
 
         </div>

@@ -79,24 +79,29 @@
                     <p class="grid col-start-1 col-span-5 ml-4 text-xl">Recent planning</p>
                     <a class="grid col-end-8 col-span-1 mr-2 mt-1 text-sm text-[#4b88e3] hover:text-[rgb(35,106,247)]" href="recent/">See all</a>
                 </div>
-                <div class="relative bg-[#e8f8fb] px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10">
-                    <a>
+                <br>
+                <a class="" href="recentplanning/{{ last_data.id }}">
+                    <div class="relative bg-[#e8f8fb] px-6 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10">
                         <p class="text-right text-[11px]">
                             {{ last_data.timestamp|date:"j F, H:i" }}
                         </p>
-                        <i class="fa-solid fa-circle pr-3 text-[#47a6ab]"></i>
-                        <a class="text-sm ml-3">
-                            {{ last_data.origin_name }}
-                        </a>
-                        <br>
-                        <i class="fa-solid fa-ellipsis-vertical ml-1.5 text-[#8c8c8c]"></i>
-                        <br>
-                        <i class="fa-solid fa-location-dot pl-0.5 pr-3.5 text-[#FF370D]"></i>
-                        <a class="text-sm ml-3">
-                            {{ last_data.destin_name }}
-                        </a>
-                    </a>
-                </div>
+                        <div class="flex flex-col space-y-4">
+                            <div class="flex">
+                                <i class="fa-solid fa-circle pr-3 text-[#47a6ab]"></i>
+                                <p class="text-sm ml-3">
+                                    {{ last_data.origin_name }}
+                                </p>
+                            </div>
+                            <i class="fa-solid fa-ellipsis-vertical ml-1.5 text-[#8c8c8c]"></i>
+                            <div class="flex">
+                                <i class="fa-solid fa-location-dot pl-0.5 pr-3.5 text-[#FF370D]"></i>
+                                <p class="text-sm ml-3">
+                                    {{ last_data.destin_name }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
                 <p class="ml-4 text-xl pt-10">Saved place</p>
                 <div class="flex justify-evenly">
                     <a class="fa-solid fa-house-chimney px-4 text-[48px] text-[#56a49a] hover:text-[#47a6ab]" href="soon/"></a>
