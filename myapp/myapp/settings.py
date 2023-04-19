@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'members.apps.MembersConfig',
-    'home.apps.HomeConfig'
+    'home.apps.HomeConfig',
+    'app_users.apps.AppUsersConfig'
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,9 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Auth
+
+LOGIN_REDIRECT_URL = 'index_home'
+LOGOUT_REDIRECT_URL = 'index_home'

@@ -14,6 +14,7 @@
 
     <body>
         <div class="bg-gradient-to-br from-cyan-100 to-red-100 min-h-screen">
+            {% if user.is_authenticated %}
             <div class="relative bg-[#47a6ab] px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 rounded-b-3xl sm:mx-auto sm:max-w-lg sm:rounded-b-3xl sm:px-10">
                 <a href="reset_temp_data/" class="ml-4 text-white text-2xl font-bold">Planning your time</a>
                 <p class="ml-4 text-white text-sm pt-2 pb-2 font-normal">Please enter your destination</p>
@@ -108,10 +109,23 @@
                     <a class="fa-solid fa-briefcase px-4 text-[48px] text-[#56a49a] hover:text-[#47a6ab]" href="soon/"></a>
                     <a class="fa-solid fa-bookmark px-4 text-[48px] text-[#56a49a] hover:text-[#47a6ab]" href="soon/"></a>
                 </div>
-                <div>
-                    
+                <div class="flex">
+                    <p class="p-2">You are login as {{ user.username }}</p>
+                    <a href="{% url 'logout' %}" class="p-2 text-[#47a6ab] hover:text-[rgb(35,106,247)]">Logout</a>
+                </div>
             </div>
+            {% else %}
+            <div class="grid grid-cols-1 min-h-screen content-center">
+                <p class="flex justify-center">
+                    <a id="myButton" class="bg-white ring-2 ring-[#47a6ab] p-4 text-center rounded-xl hover:text-[#47a6ab] hover:ring-blue-400" href="{% url 'login' %}">
+                        Login
+                    </a>
+                    <script>
+                        document.getElementById('myButton').click();
+                    </script>
+                </p>
             </div>
         </div>
+        {% endif %}
     </body>
 </html>

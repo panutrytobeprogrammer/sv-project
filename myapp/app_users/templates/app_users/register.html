@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>senior project | Register</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/e18a3893e1.js" crossorigin="anonymous"></script>
+    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script> -->
+</head>
+<body>
+    <div class="bg-gradient-to-br from-cyan-100 to-red-100 grid grid-cols-1 content-center min-h-screen">
+        <div class="flex justify-center">
+            <div class="relative bg-white rounded-2xl w-96 space-y-3 p-8">
+                <div class="flex justify-evenly">
+                    <a class="text-2xl text-center text-gray-500" href="{% url 'login' %}">Sign-in</p>
+                    <a class="text-2xl text-center" href="{% url 'register' %}">Sign-up</a>
+                </div>
+                <form action="{% url 'register' %}" method="post" class="space-y-3 flex-col flex justify-center p-4">
+                    {% csrf_token %}
+                    <!-- <input type="text" class="p-4 rounded-2xl border-2" placeholder="Enter username..." name="username" id="username">
+                    <input type="password" class="p-4 rounded-2xl border-2" placeholder="Enter password..." name="password" id="password">
+                    <br>
+                    <input type="submit" value="Register" id="next" class="relative bg-black text-white px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none"> -->
+                    {{ form.username.label_tag }}
+                    <div class="p-4 rounded-2xl border-2">
+                        {{ form.username }}
+                        {{ form.username.errors }}
+                    </div>
+                    {{ form.password1.label_tag }}
+                    <div class="p-4 rounded-2xl border-2">
+                        {{ form.password1 }}
+                        {{ form.password1.errors }}
+                    </div>
+                    {{ form.password2.label_tag }}
+                    <div class="p-4 rounded-2xl border-2">
+                        {{ form.password2 }}
+                        {{ form.password2.errors }}
+                    </div>
+                    <p>
+                        <button type="submit" class="flex justify-center bg-black text-white px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">Login</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

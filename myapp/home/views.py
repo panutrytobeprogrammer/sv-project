@@ -10,7 +10,9 @@ from .program_func import *
 
 # Create your views here.
 
-def index(request, user_id):
+user_id=1
+
+def index(request):
     print(f'{datetime.datetime.now()}: index_process')
     # load template
     template = loader.get_template('home.html')
@@ -27,7 +29,7 @@ def index(request, user_id):
     }
     return HttpResponse(template.render(context, request))
 
-def map_home(request, user_id):
+def map_home(request):
     print(f'{datetime.datetime.now()}: map')
     template = loader.get_template('map.html')
     return HttpResponse(template.render())
@@ -38,7 +40,7 @@ def add_recent_record(user_id, og_name, ds_name, avg_time, plantime):
     plan = Recentplan(user_id=user_id, origin_name=og_name, origin_pos=og_pos, destin_name=ds_name, destin_pos=ds_pos, avg_time=avg_time, timestamp=str(plantime))
     plan.save()
 
-def planning(request, user_id):
+def planning(request):
     print(f'{datetime.datetime.now()}: planning start')
     Planning_temp.objects.filter(user_id=user_id).all().delete()
     # load template
@@ -101,7 +103,7 @@ def planning(request, user_id):
     print(f'{datetime.datetime.now()}: planning end')
     return HttpResponse(template.render(context, request))
 
-def visualize(request, plantype, user_id):
+def visualize(request, plantype):
     print(f'{datetime.datetime.now()}: visualize start')
     template = loader.get_template('visualize.html')
 
@@ -140,7 +142,7 @@ def visualize(request, plantype, user_id):
     print(f'{datetime.datetime.now()}: visualize end')
     return HttpResponse(template.render(context, request))
 
-def recent_plan_seeall(request, user_id):
+def recent_plan_seeall(request):
     template = loader.get_template('recent.html')
     result_exist = Recentplan.objects.filter(user_id=user_id)
     if result_exist.exists():
@@ -152,18 +154,18 @@ def recent_plan_seeall(request, user_id):
     }
     return HttpResponse(template.render(context, request))
 
-def soon(request, user_id):
+def soon(request):
     template = loader.get_template('comingsoon.html')
     return HttpResponse(template.render())
 
-def back_to_home(request, user_id):
+def back_to_home(request):
     Planning_temp.objects.filter(user_id=user_id).all().delete()
-    url = reverse('index_home', kwargs={'user_id':user_id})
+    url = reverse('index_home')
     return HttpResponseRedirect(url)
 
-def reset_temp_data(request, user_id):
+def reset_temp_data(request):
     Planning_temp.objects.filter(user_id=user_id).all().delete()
-    url = reverse('index_home', kwargs={'user_id':user_id})
+    url = reverse('index_home')
     return HttpResponseRedirect(url)
 
 def login(request):
@@ -199,7 +201,7 @@ def regist(request):
     User_id(username=username, password=password).save()
     return HttpResponseRedirect(reverse('login'))
 
-def planrecent(request, user_id, plan_id):
+def planrecent(request, plan_id):
     template = loader.get_template('planrecent.html')
     temp = Recentplan.objects.get(id=plan_id)
     context = {
@@ -208,7 +210,7 @@ def planrecent(request, user_id, plan_id):
     }
     return HttpResponse(template.render(context, request))
 
-def planningfromrecent(request, user_id, plan_id):
+def planningfromrecent(request, plan_id):
     Planning_temp.objects.filter(user_id=user_id).all().delete()
     # load template
     template = loader.get_template('planning.html')
