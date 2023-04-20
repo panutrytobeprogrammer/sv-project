@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import get_user
 from .models import Recentplan, location, Planning_temp, User_id, Varandma
 from django.urls import reverse
 import datetime
@@ -10,9 +10,9 @@ from .program_func import *
 
 # Create your views here.
 
-user_id=1
 
 def index(request):
+    user_id = get_user(request).id
     print(f'{datetime.datetime.now()}: index_process')
     # load template
     template = loader.get_template('home.html')
@@ -25,7 +25,7 @@ def index(request):
     location_data = location.objects.all().values()
     context = {
         'last_data': data_recent,
-        'location_data': location_data
+        'location_data': location_data,
     }
     return HttpResponse(template.render(context, request))
 
@@ -41,6 +41,7 @@ def add_recent_record(user_id, og_name, ds_name, avg_time, plantime):
     plan.save()
 
 def planning(request):
+    user_id = get_user(request).id
     print(f'{datetime.datetime.now()}: planning start')
     Planning_temp.objects.filter(user_id=user_id).all().delete()
     # load template
@@ -104,11 +105,12 @@ def planning(request):
     return HttpResponse(template.render(context, request))
 
 def visualize(request, plantype):
+    user_id = get_user(request).id
     print(f'{datetime.datetime.now()}: visualize start')
     template = loader.get_template('visualize.html')
 
     data_temp = Planning_temp.objects.filter(user_id=user_id).get(plantype=plantype)
-    add_recent_record(user_id, data_temp.og, data_temp.ds, data_temp.traveltime, data_temp.arrv)
+    # add_recent_record(user_id, data_temp.og, data_temp.ds, data_temp.traveltime, data_temp.arrv)
     time_graph = graph_time(data_temp.og, data_temp.ds, data_temp.arrv)
     # label = time_graph['time']
     data = time_graph['tti']
@@ -143,6 +145,7 @@ def visualize(request, plantype):
     return HttpResponse(template.render(context, request))
 
 def recent_plan_seeall(request):
+    user_id = get_user(request).id
     template = loader.get_template('recent.html')
     result_exist = Recentplan.objects.filter(user_id=user_id)
     if result_exist.exists():
@@ -158,12 +161,22 @@ def soon(request):
     template = loader.get_template('comingsoon.html')
     return HttpResponse(template.render())
 
-def back_to_home(request):
+def visualize_done(request):
+    user_id = get_user(request).id
+    data_temp = Planning_temp.objects.filter(user_id=user_id).get(plantype='Usual time')
+    add_recent_record(user_id, data_temp.og, data_temp.ds, data_temp.traveltime, data_temp.arrv)
     Planning_temp.objects.filter(user_id=user_id).all().delete()
     url = reverse('index_home')
     return HttpResponseRedirect(url)
 
+# def back_to_home(request):
+#     user_id = get_user(request).id
+#     Planning_temp.objects.filter(user_id=user_id).all().delete()
+#     url = reverse('index_home')
+#     return HttpResponseRedirect(url)
+
 def reset_temp_data(request):
+    user_id = get_user(request).id
     Planning_temp.objects.filter(user_id=user_id).all().delete()
     url = reverse('index_home')
     return HttpResponseRedirect(url)
@@ -211,6 +224,7 @@ def planrecent(request, plan_id):
     return HttpResponse(template.render(context, request))
 
 def planningfromrecent(request, plan_id):
+    user_id = get_user(request).id
     Planning_temp.objects.filter(user_id=user_id).all().delete()
     # load template
     template = loader.get_template('planning.html')

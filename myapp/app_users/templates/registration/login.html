@@ -13,23 +13,31 @@
 <body>
     <div class="bg-gradient-to-br from-cyan-100 to-red-100 grid grid-cols-1 content-center min-h-screen">
         <div class="flex justify-center">
-            <div class="relative bg-white rounded-2xl w-96 space-y-3 p-8">
+            <div class="relative bg-white rounded-2xl w-96 space-y-3 p-8 ring-2 ring-[#47a6ab]">
                 <div class="flex justify-evenly">
-                    <a class="text-2xl text-center" href="{% url 'login' %}">Sign-in</p>
-                    <a class="text-2xl text-center text-gray-500" href="{% url 'register' %}">Sign-up</a>
+                    <p class="text-2xl text-center">Sign in</p>
                 </div>
-                <form action="{% url 'login' %}" method="post" class="space-y-3 flex-col flex justify-center p-4">
+                <form action="{% url 'login' %}" method="post" class="space-y-3 flex-col flex justify-center">
                     {% csrf_token %}
-                    <input type="text" class="p-4 rounded-2xl border-2" placeholder="Enter username..." name="username" id="username">
+                    <input type="text" class="p-4 rounded-2xl border-2 focus:border-[#47a6ab]" placeholder="Enter username..." name="username" id="username">
+                    {{ form.username.errors }}
                     <input type="password" class="p-4 rounded-2xl border-2" placeholder="Enter password..." name="password" id="password">
+                    {{ form.password.errors }}
+                    <div class="text-sm text-red-600">{{ form.non_field_errors }}</div>
                     <br>
                     <input type="submit" value="Login" id="next" class="relative bg-black text-white px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">
+                    <!-- {{ form.username.errors }} -->
                     <!-- {{ form.as_p }}
                     <p>
                         <button type="submit" class="relative bg-black text-white px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">Login</button>
                     </p> -->
+                    
                 </form>
                 <!-- <a href="savedata/">save</a> -->
+                <br>
+                <p class="text-sm text-gray-500">Don't have an account?
+                    <a class="text-sm text-[#4b88e3] hover:text-[#47a6ab]" href="{% url 'register' %}">Sign up</a>
+                </p>
             </div>
         </div>
     </div>

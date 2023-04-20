@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-i6g8+cs99f=m50(ddq27=e^*z^c4*v4d$uh7l=nvaycb4mq-ak
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['076d-2403-6200-88a4-497-2039-91c9-700a-b435.ngrok-free.app', '127.0.0.1']
+
+
+# CSRF Trust
+
+CSRF_TRUSTED_ORIGINS = ['https://076d-2403-6200-88a4-497-2039-91c9-700a-b435.ngrok-free.app']
 
 # AUTH_USER_MODEL = 'home.User'
 
@@ -48,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

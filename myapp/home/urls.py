@@ -27,7 +27,7 @@ urlpatterns = [
     path('soon/', views.soon, name='soon'),
     path('planning/', views.planning, name='planning'),
     path('planning/visualize/<str:plantype>', views.visualize, name='visualize'),
-    path('planning/visualize/done/', views.back_to_home, name='done'),
+    path('planning/visualize/done/', views.visualize_done, name='done'),
     path('recentplanning/<int:plan_id>', views.planrecent, name='plannrecent'),
     path('planning/<int:plan_id>', views.planningfromrecent, name='planningfromrecent'),
 ]

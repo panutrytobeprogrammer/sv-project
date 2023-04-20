@@ -13,10 +13,9 @@
 <body>
     <div class="bg-gradient-to-br from-cyan-100 to-red-100 grid grid-cols-1 content-center min-h-screen">
         <div class="flex justify-center">
-            <div class="relative bg-white rounded-2xl w-96 space-y-3 p-8">
+            <div class="relative bg-white rounded-2xl w-96 space-y-3 p-8 ring-2 ring-[#47a6ab]">
                 <div class="flex justify-evenly">
-                    <a class="text-2xl text-center text-gray-500" href="{% url 'login' %}">Sign-in</p>
-                    <a class="text-2xl text-center" href="{% url 'register' %}">Sign-up</a>
+                    <p class="text-2xl text-center">Sign-up</p>
                 </div>
                 <form action="{% url 'register' %}" method="post" class="space-y-3 flex-col flex justify-center p-4">
                     {% csrf_token %}
@@ -39,10 +38,15 @@
                         {{ form.password2 }}
                         {{ form.password2.errors }}
                     </div>
+                    <div class="text-sm text-red-600">{{ form.non_field_errors }}</div>
                     <p>
-                        <button type="submit" class="flex justify-center bg-black text-white px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">Login</button>
+                        <button type="submit" class="flex justify-center bg-black text-white px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">Register</button>
                     </p>
                 </form>
+                <br>
+                <p class="text-sm text-gray-500">Already have an account?
+                    <a class="text-sm text-[#4b88e3] hover:text-[#47a6ab]" href="{% url 'login' %}">Sign in</a>
+                </p>
             </div>
         </div>
     </div>
