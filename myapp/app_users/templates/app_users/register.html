@@ -17,27 +17,14 @@
                 <div class="flex justify-evenly">
                     <p class="text-2xl text-center">Sign-up</p>
                 </div>
-                <form action="{% url 'register' %}" method="post" class="space-y-3 flex-col flex justify-center p-4">
+                <form action="{% url 'register' %}" method="post" class="space-y-3 flex-col flex justify-center">
                     {% csrf_token %}
-                    <!-- <input type="text" class="p-4 rounded-2xl border-2" placeholder="Enter username..." name="username" id="username">
-                    <input type="password" class="p-4 rounded-2xl border-2" placeholder="Enter password..." name="password" id="password">
-                    <br>
-                    <input type="submit" value="Register" id="next" class="relative bg-black text-white px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none"> -->
-                    {{ form.username.label_tag }}
-                    <div class="p-4 rounded-2xl border-2">
-                        {{ form.username }}
-                        {{ form.username.errors }}
-                    </div>
-                    {{ form.password1.label_tag }}
-                    <div class="p-4 rounded-2xl border-2">
-                        {{ form.password1 }}
-                        {{ form.password1.errors }}
-                    </div>
-                    {{ form.password2.label_tag }}
-                    <div class="p-4 rounded-2xl border-2">
-                        {{ form.password2 }}
-                        {{ form.password2.errors }}
-                    </div>
+                    <input type="text" class="p-4 rounded-2xl border-2" name="username" maxlength="150" autocapitalize="none" autocomplete="username" autofocus="" required="" id="id_username" placeholder="username">
+                    {{ form.username.errors }}
+                    <input type="password" class="p-4 rounded-2xl border-2" name="password1" autocomplete="new-password" required="" id="id_password1" placeholder="password">
+                    {{ form.password1.errors }}
+                    <input type="password" class="p-4 rounded-2xl border-2" name="password2" autocomplete="new-password" required="" id="id_password2" placeholder="re-enter password">
+                    {{ form.password2.errors }}
                     <div class="text-sm text-red-600">{{ form.non_field_errors }}</div>
                     <p>
                         <button type="submit" class="flex justify-center bg-black text-white px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">Register</button>
