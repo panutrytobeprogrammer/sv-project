@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['*']
 
 # CSRF Trust
 
-CSRF_TRUSTED_ORIGINS = ['https://076d-2403-6200-88a4-497-2039-91c9-700a-b435.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://d65f-49-229-151-112.ngrok-free.app']
 
 # AUTH_USER_MODEL = 'home.User'
 
@@ -149,4 +149,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'index_home'
 LOGOUT_REDIRECT_URL = 'index_home'
 
-SESSION_COOKIE_AGE = 30*60
+# SESSION_COOKIE_AGE = 30*60

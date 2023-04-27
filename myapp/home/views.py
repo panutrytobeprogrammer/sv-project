@@ -13,7 +13,10 @@ from .program_func import *
 
 def index(request):
     user_id = get_user(request).id
-    print(f'{datetime.datetime.now()}: index_process')
+    # print('---------------------------------------')
+    # print('user id:', user_id)
+    # print('---------------------------------------')
+    print(f'[{datetime.datetime.now().strftime("%d/%b/%Y %H:%M:%S")}] [user_id: {user_id}] index_process')
     # load template
     template = loader.get_template('home.html')
     # get recent data
@@ -42,16 +45,16 @@ def add_recent_record(user_id, og_name, ds_name, avg_time, plantime):
 
 def planning(request):
     user_id = get_user(request).id
-    print(f'{datetime.datetime.now()}: planning start')
+    print(f'[{datetime.datetime.now().strftime("%d/%b/%Y %H:%M:%S")}] [user_id: {user_id}] planning start')
     Planning_temp.objects.filter(user_id=user_id).all().delete()
     # load template
     template = loader.get_template('planning.html')
     origin_name = request.POST['origin_plan']
     destin_name = request.POST['destination_plan']
     plantime_date = request.POST['plantime_date']
-    print('date:', plantime_date)
+    # print('date:', plantime_date)
     plantime_time = request.POST['plantime_time']
-    print('time:', plantime_time)
+    # print('time:', plantime_time)
     origin_s = s_name(origin_name)
     destin_s = s_name(destin_name)
 
@@ -101,13 +104,13 @@ def planning(request):
         'ds_pos_lon': ds_pos[1][:-1],
         'ds_pos_lat': ds_pos[0][1:],
     }
-    print(f'{datetime.datetime.now()}: planning end')
+    print(f'[{datetime.datetime.now().strftime("%d/%b/%Y %H:%M:%S")}] [user_id: {user_id}] planning end')
     return HttpResponse(template.render(context, request))
 
 def visualize(request, plantype):
     user_id = get_user(request).id
-    print(f'{datetime.datetime.now()}: visualize start')
-    template = loader.get_template('visualize.html')
+    print(f'[{datetime.datetime.now().strftime("%d/%b/%Y %H:%M:%S")}] [user_id: {user_id}] visualize start')
+    template = loader.get_template('viz2.html')
 
     data_temp = Planning_temp.objects.filter(user_id=user_id).get(plantype=plantype)
     # add_recent_record(user_id, data_temp.og, data_temp.ds, data_temp.traveltime, data_temp.arrv)
@@ -119,12 +122,14 @@ def visualize(request, plantype):
     ds_pos = location.objects.get(name=data_temp.ds).geometry.split(',')
 
     extratime = data_temp.extratime
+    txt_et2 = ''
     if plantype[:6] == 'Unsafe':
-        txt_et = f'Save {abs(extratime)} min'
+        txt_et = f'This is the fastest time you will arrive,'
+        txt_et2 = 'but you might be late.'
     elif plantype[:4] == 'Safe':
-        txt_et = f'Extra time {extratime} min'
+        txt_et = f"Departing at { data_temp.start.strftime('%H:%M') }, you most likely arrive on time."
     else:
-        txt_et = 'No extra time'
+        txt_et = f"After { data_temp.start.strftime('%H:%M') }, you are likely to be late."
     
     ttt = data_temp.traveltime - extratime
 
@@ -138,14 +143,18 @@ def visualize(request, plantype):
         'ds_pos_lon': ds_pos[1][:-1],
         'ds_pos_lat': ds_pos[0][1:],
         'txt_et':txt_et,
+        'txt_et2':txt_et2,
         'ttt':ttt,
         'extratime':extratime,
+        'plantype': plantype,
+        'now':(data_temp.start - datetime.datetime.now() - datetime.timedelta(hours=7)),
     }
-    print(f'{datetime.datetime.now()}: visualize end')
+    print(f'[{datetime.datetime.now().strftime("%d/%b/%Y %H:%M:%S")}] [user_id: {user_id}] visualize end')
     return HttpResponse(template.render(context, request))
 
 def recent_plan_seeall(request):
     user_id = get_user(request).id
+    print(f'[{datetime.datetime.now().strftime("%d/%b/%Y %H:%M:%S")}] [user_id: {user_id}] recent plan see all')
     template = loader.get_template('recent.html')
     result_exist = Recentplan.objects.filter(user_id=user_id)
     if result_exist.exists():
@@ -158,6 +167,8 @@ def recent_plan_seeall(request):
     return HttpResponse(template.render(context, request))
 
 def soon(request):
+    user_id = get_user(request).id
+    print(f'[{datetime.datetime.now().strftime("%d/%b/%Y %H:%M:%S")}] [user_id: {user_id}] soon page')
     template = loader.get_template('comingsoon.html')
     return HttpResponse(template.render())
 
@@ -167,6 +178,7 @@ def visualize_done(request):
     add_recent_record(user_id, data_temp.og, data_temp.ds, data_temp.traveltime, data_temp.arrv)
     Planning_temp.objects.filter(user_id=user_id).all().delete()
     url = reverse('index_home')
+    print(f'[{datetime.datetime.now().strftime("%d/%b/%Y %H:%M:%S")}] [user_id: {user_id}] done')
     return HttpResponseRedirect(url)
 
 # def back_to_home(request):
@@ -177,6 +189,7 @@ def visualize_done(request):
 
 def reset_temp_data(request):
     user_id = get_user(request).id
+    print(f'[{datetime.datetime.now().strftime("%d/%b/%Y %H:%M:%S")}] [user_id: {user_id}] reset temp data')
     Planning_temp.objects.filter(user_id=user_id).all().delete()
     url = reverse('index_home')
     return HttpResponseRedirect(url)

@@ -42,12 +42,21 @@
           placeholder: document.getElementById('map')
         });
         map.Route.placeholder(document.getElementById('result'));
+        map.zoom(14,true)
         map.Route.add(new longdo.Marker({ lon: parseFloat('{{ og_pos_lon }}'), lat: parseFloat('{{ og_pos_lat }}') },
             { 
                 title: '{{ data_temp.og }}', 
                 // detail: 'I\'m here' 
             }
         ));
+        map.Ui.DPad.visible(false);
+        map.Ui.Zoombar.visible(false);
+        map.Ui.Geolocation.visible(false);
+        map.Ui.Toolbar.visible(false);
+        map.Ui.LayerSelector.visible(false);
+        map.Ui.Fullscreen.visible(false);
+        map.Ui.Crosshair.visible(false);
+        map.Ui.Scale.visible(false)
         map.Route.add({ lon: parseFloat('{{ ds_pos_lon }}'), lat: parseFloat('{{ ds_pos_lat }}') });
         map.Route.search();
       }
@@ -77,8 +86,8 @@
                         <div class="flex tooltip text-[14px] text-[#47a6ab] font-light bg-white py-2 px-4 rounded-2xl tooltip">
                           <!-- {{x.plantype}} -->
                           <p class="" id="planname_{{x.plantype}}"></p>
-                          <i class="mt-1 ml-2 fa-solid fa-circle-info"></i>
-                          <span class="tooltiptext" id="dscrp_detail_{{x.plantype}}"></span>
+                          <!-- <i class="mt-1 ml-2 fa-solid fa-circle-info"></i> -->
+                          <!-- <span class="tooltiptext" id="dscrp_detail_{{x.plantype}}"></span> -->
                         </div>  
                         <script>
                           function checkplan() {
@@ -87,14 +96,14 @@
                             plantype = "{{ x.plantype }}".slice(0,4)
 
                             if (plantype == 'Safe') {
-                                dscrp_detail.innerHTML = 'If your appointment is important, this planning time is safe for you to arrive on time.';
-                                planname.innerHTML = 'SAFEEE!!!'
+                                // dscrp_detail.innerHTML = 'If your appointment is important, this planning time is safe for you to arrive on time.';
+                                planname.innerHTML = 'Definitely on time!'
                             } else if (plantype == 'Usua') {
-                                dscrp_detail.innerHTML = 'The typical travel time under normal situation, without any delays or unexpected situation.';
-                                planname.innerHTML = 'USUALL!!!'
+                                // dscrp_detail.innerHTML = 'The typical travel time under normal situation, without any delays or unexpected situation.';
+                                planname.innerHTML = 'Likely on time'
                             } else {
-                                dscrp_detail.innerHTML = 'Pleng is thinking about this meaning. Best is waiting for Pleng to think about it.';
-                                planname.innerHTML = 'UNSAFEE!!!'
+                                // dscrp_detail.innerHTML = 'Pleng is thinking about this meaning. Best is waiting for Pleng to think about it.';
+                                planname.innerHTML = 'Likely to be late!'
                             }
                           }
                           checkplan();
