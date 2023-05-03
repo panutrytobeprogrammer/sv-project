@@ -15,21 +15,6 @@ class location(models.Model):
     name = models.CharField(max_length=255)
     geometry = models.CharField(max_length=255)
 
-class Location_time(models.Model):
-    pass
-
-class Appoint_default(models.Model):
-    name = models.CharField(max_length=255)
-    default_time = models.IntegerField()
-
-class planning_to_visualize(models.Model):
-    origin_name = models.CharField(max_length=255)
-    destin_name = models.CharField(max_length=255)
-    avg_time = models.PositiveIntegerField()
-    percent = models.PositiveIntegerField()
-    pie_chart = models.ImageField()
-    bar_chart = models.ImageField()
-
 class Planning_temp(models.Model):
     user_id = models.PositiveIntegerField()
     plantype = models.CharField(max_length=255)
