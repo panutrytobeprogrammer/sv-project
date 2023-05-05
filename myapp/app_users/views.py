@@ -12,8 +12,8 @@ def register(request: HttpRequest):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            return HttpResponseRedirect(reverse('index_home'))
+            # login(request, user)
+            # return HttpResponseRedirect(reverse('index_home'))
     else:
         form = RegisterForm()
 

@@ -36,7 +36,7 @@
                     {{ form.password2.errors }}
                     <div class="text-sm text-red-600">{{ form.non_field_errors }}</div>
                     <p>
-                        <button type="submit" class="flex justify-center bg-black text-white px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">Register</button>
+                        <button type="submit" id="next" class="flex justify-center bg-black text-white px-10 pt-4 pb-4 shadow-xl ring-1 ring-gray-900/5 rounded-2xl sm:mx-auto sm:max-w-lg sm:rounded-3xl sm:px-10 hover:bg-gradient-to-br from-black to-[#2B2B2B] border-none">Register</button>
                     </p>
                 </form>
                 <br>
@@ -44,6 +44,21 @@
                     <a class="text-sm text-[#4b88e3] hover:text-[#47a6ab]" href="{% url 'login' %}">Sign in</a>
                 </p>
             </div>
+            <!-- <script>
+                // auto regist
+                function autoenter() {
+                    var d = new Date().getSeconds()
+                    var username = document.getElementById('id_username')
+                    var password1 = document.getElementById('id_password1')
+                    var password2 = document.getElementById('id_password2')
+                    var button = document.getElementById('next')
+                    username.value = 'test'+String(d)
+                    password1.value = 'seniorproject123'
+                    password2.value = 'seniorproject123'
+                    // button.click();
+                }
+                setInterval(autoenter(), 1000);
+            </script> -->
         </div>
     </div>
 </body>

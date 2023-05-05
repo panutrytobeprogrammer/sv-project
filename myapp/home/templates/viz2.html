@@ -245,8 +245,20 @@
                 <a class="grid col-span-2 bg-white px-5 py-3 ring-1 ring-[rgb(255,255,255,0.9)] rounded-2xl shadow-2xl w-full text-center" onclick="history.back()">
                     <p class="fa-solid fa-chevron-left text-2xl"></p>
                 </a>
-                <a class="grid col-span-3 bg-black text-white text-2xl text-center px-5 py-3 rounded-2xl w-full" href="done/">Done</a>
+                <a class="grid col-span-3 bg-black text-white text-2xl text-center px-5 py-3 rounded-2xl w-full" id="done_button1" href="https://forms.gle/2EsSUa5KBkc4oEDw7" target="_blank" onclick="clickfirstdone();">Done</a>
+                <a class="grid col-span-3 bg-black text-white text-2xl text-center px-5 py-3 rounded-2xl w-full hidden" id="done_button2" href="done/">Done</a>
             </div>
+            <script>
+                function clickfirstdone() {
+                    var done_button = document.getElementById('done_button1')
+                    done_button.classList.add('hidden')
+                    var done_button2 = document.getElementById('done_button2')
+                    done_button2.classList.remove('hidden')
+                }
+                function clickdone() {
+                    
+                }
+            </script>
 
         </div>
     </div> 

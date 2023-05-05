@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['*']
 
 # CSRF Trust
 
-CSRF_TRUSTED_ORIGINS = ['https://1865-2001-44c8-4531-b85b-6cd2-9545-ca28-f61c.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://9e5e-2403-6200-88a4-3823-4482-2ea9-39fa-2b1.ngrok-free.app']
 
 # AUTH_USER_MODEL = 'home.User'
 
