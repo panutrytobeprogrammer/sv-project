@@ -6,10 +6,14 @@ from .models import Recentplan, location, Planning_temp, User_id, Varandma
 from django.urls import reverse
 import datetime
 from .program_func import *
+import os
 
 
 # Create your views here.
 
+map_api = str(os.getenv('MAP_API'))
+font_api = str(os.getenv('FONT_API'))
+gg_ana = str(os.getenv('GG_ANA'))
 
 def index(request):
     user_id = get_user(request).id
@@ -29,6 +33,9 @@ def index(request):
     context = {
         'last_data': data_recent,
         'location_data': location_data,
+        'map_api': map_api,
+        'font_api': font_api,
+        'gg_ana': gg_ana,
     }
     return HttpResponse(template.render(context, request))
 
@@ -103,6 +110,9 @@ def planning(request):
         'og_pos_lat': og_pos[0][1:],
         'ds_pos_lon': ds_pos[1][:-1],
         'ds_pos_lat': ds_pos[0][1:],
+        'map_api': map_api,
+        'font_api': font_api,
+        'gg_ana': gg_ana,
     }
     print(f'[{datetime.datetime.now().strftime("%d/%b/%Y %H:%M:%S")}] [user_id: {user_id}] planning end')
     return HttpResponse(template.render(context, request))
@@ -148,6 +158,9 @@ def visualize(request, plantype):
         'extratime':extratime,
         'plantype': plantype,
         'now':(data_temp.start - datetime.datetime.now() - datetime.timedelta(hours=7)),
+        'map_api': map_api,
+        'font_api': font_api,
+        'gg_ana': gg_ana,
     }
     print(f'[{datetime.datetime.now().strftime("%d/%b/%Y %H:%M:%S")}] [user_id: {user_id}] visualize end')
     return HttpResponse(template.render(context, request))
@@ -162,7 +175,10 @@ def recent_plan_seeall(request):
     else:
         data = {'origin_name': 'None', 'destin_name': 'None', 'timestamp': 'None'}
     context = {
-        'recent_data': data
+        'recent_data': data,
+        'map_api': map_api,
+        'font_api': font_api,
+        'gg_ana': gg_ana,
     }
     return HttpResponse(template.render(context, request))
 
@@ -232,7 +248,10 @@ def planrecent(request, plan_id):
     temp = Recentplan.objects.get(id=plan_id)
     context = {
         'plan_temp': temp,
-        'plan_id': plan_id
+        'plan_id': plan_id,
+        'map_api': map_api,
+        'font_api': font_api,
+        'gg_ana': gg_ana,
     }
     return HttpResponse(template.render(context, request))
 
@@ -296,6 +315,9 @@ def planningfromrecent(request, plan_id):
         'og_pos_lat': og_pos[0][1:],
         'ds_pos_lon': ds_pos[1][:-1],
         'ds_pos_lat': ds_pos[0][1:],
+        'map_api': map_api,
+        'font_api': font_api,
+        'gg_ana': gg_ana,
     }
     print(f'{datetime.datetime.now()}: planning end')
     return HttpResponse(template.render(context, request))

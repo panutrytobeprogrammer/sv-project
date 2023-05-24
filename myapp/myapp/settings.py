@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-i6g8+cs99f=m50(ddq27=e^*z^c4*v4d$uh7l=nvaycb4mq-ak'
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -30,7 +33,7 @@ ALLOWED_HOSTS = ['*']
 
 # CSRF Trust
 
-CSRF_TRUSTED_ORIGINS = ['https://9e5e-2403-6200-88a4-3823-4482-2ea9-39fa-2b1.ngrok-free.app']
+# CSRF_TRUSTED_ORIGINS = ['*']
 
 # AUTH_USER_MODEL = 'home.User'
 

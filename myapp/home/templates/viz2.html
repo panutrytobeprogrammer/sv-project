@@ -6,11 +6,11 @@
     <title>senior project | Visualization</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://kit.fontawesome.com/e18a3893e1.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://api.longdo.com/map/?key=3591015ec2722fad511c21639251c17f"></script>
+    <script src={{font_api}} crossorigin="anonymous"></script>
+    <script type="text/javascript" src={{map_api}}></script>
     <!-- <script src="home/templates/jsfunc_for_plan.js"></script> -->
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-327NFBPZ9S"></script>
+    <script async src={{gg_ana}}></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -245,8 +245,9 @@
                 <a class="grid col-span-2 bg-white px-5 py-3 ring-1 ring-[rgb(255,255,255,0.9)] rounded-2xl shadow-2xl w-full text-center" onclick="history.back()">
                     <p class="fa-solid fa-chevron-left text-2xl"></p>
                 </a>
-                <a class="grid col-span-3 bg-black text-white text-2xl text-center px-5 py-3 rounded-2xl w-full" id="done_button1" href="https://forms.gle/2EsSUa5KBkc4oEDw7" target="_blank" onclick="clickfirstdone();">Done</a>
-                <a class="grid col-span-3 bg-black text-white text-2xl text-center px-5 py-3 rounded-2xl w-full hidden" id="done_button2" href="done/">Done</a>
+                <!-- <a class="grid col-span-3 bg-black text-white text-2xl text-center px-5 py-3 rounded-2xl w-full" id="done_button1" href="https://forms.gle/2EsSUa5KBkc4oEDw7" target="_blank" onclick="clickfirstdone();">Done</a> -->
+                <!-- <a class="grid col-span-3 bg-black text-white text-2xl text-center px-5 py-3 rounded-2xl w-full hidden" id="done_button2" href="done/">Done</a> -->
+                <a class="grid col-span-3 bg-black text-white text-2xl text-center px-5 py-3 rounded-2xl w-full" id="done_button2" href="done/">Done</a>
             </div>
             <script>
                 function clickfirstdone() {
