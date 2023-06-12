@@ -175,7 +175,7 @@
                     const ctx = document.getElementById('myChart');
                     const color_list = [];
                     const d = document.getElementById('timearrv').innerHTML.split(':')[0]
-                    const label_time_color = ['6:00', '7:00', '8:00', '9:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
+                    const label_time_color = ['06:00', '07:00', '08:00', '09:00','10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
                     const label_time = ['6:00', '', '', '9:00','', '', '12:00', '', '', '15:00', '', '', '18:00', '', '', '21:00'];
                     for (let i = 0; i<16; i++) {
                         if (d === label_time_color[i].split(':')[0]) {
@@ -183,9 +183,10 @@
                         } else {
                             color_list.push("rgba(71, 166, 171, 0.6)")
                         }
-                        // console.log(d)
-                        // console.log(label_time[i].split(':')[0])
+                        console.log(d)
+                        console.log(label_time_color[i].split(':')[0])
                     }
+                    
                     new Chart(ctx, {
                         type: 'bar',
                         data: {

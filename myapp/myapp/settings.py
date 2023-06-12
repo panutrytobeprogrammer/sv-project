@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['*']
 
 # CSRF Trust
 
-# CSRF_TRUSTED_ORIGINS = ['*']
+# CSRF_TRUSTED_ORIGINS = ['https://svproject.panu.site']
 
 # AUTH_USER_MODEL = 'home.User'
 
@@ -88,8 +88,12 @@ WSGI_APPLICATION = 'myapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'panuwat_svproject',
+        'USER': 'panuwat',
+        'PASSWORD': str(os.getenv('DB_PASS')),
+        'HOST': str(os.getenv('DB_HOST_MSQL')),
+        'PORT': '3306'
     }
 }
 
@@ -122,7 +126,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)

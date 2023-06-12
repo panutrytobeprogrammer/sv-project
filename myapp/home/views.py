@@ -157,7 +157,7 @@ def visualize(request, plantype):
         'ttt':ttt,
         'extratime':extratime,
         'plantype': plantype,
-        'now':(data_temp.start - datetime.datetime.now() - datetime.timedelta(hours=7)),
+        # 'now':(data_temp.start - datetime.datetime.now() - datetime.timedelta(hours=7)),
         'map_api': map_api,
         'font_api': font_api,
         'gg_ana': gg_ana,
