@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['*']
 
 # CSRF Trust
 
-CSRF_TRUSTED_ORIGINS = ['https://sv-project-9o9f.vercel.app/']
+# CSRF_TRUSTED_ORIGINS = ['https://sv-project-9o9f.vercel.app/']
 
 # AUTH_USER_MODEL = 'home.User'
 
