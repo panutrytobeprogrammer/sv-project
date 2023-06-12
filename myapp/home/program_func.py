@@ -1,7 +1,7 @@
 import datetime
 import matplotlib
 matplotlib.use('Agg')
-import pandas as pd
+# import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import math
@@ -72,9 +72,11 @@ def graph_time(og, ds, time):
     set_time = {'time':[], 'tti':[], 'Unsafe':[], 'Usual':[], 'Safe':[]}
     # set_time = {'time':[], 'Unsafe':[], 'Usual':[], 'Safe':[]}
     start = f'{str(time)[:10]} 6:00:00'
-    start = pd.to_datetime(start)
+    # start = pd.to_datetime(start)
+    start = datetime.datetime.strptime(start, '%Y-%m-%d %H:%M:%S')
     stop = f'{str(time)[:10]} 21:00:00'
-    stop = pd.to_datetime(stop)
+    # stop = pd.to_datetime(stop)
+    stop = datetime.datetime.strptime(stop, '%Y-%m-%d %H:%M:%S')
     delta = datetime.timedelta(hours=1)
     while start <= stop:
         time = query_time_v2(route=f'{s_name(og)}_{s_name(ds)}', dt=start)
@@ -109,7 +111,8 @@ def query_time_v2(route, dt):
     if datetime.time(h,m,s) < datetime.time(6,0,0) or datetime.time(h,m,s) > datetime.time(21,0,0):
         return {'ff_time':0, 'avg_time':0, 'p95_time':0, 'tti':0}
     time = time[:4]+'0:00'
-    dt = pd.to_datetime(dt)
+    print(dt)
+    # dt = pd.to_datetime(dt)
     day = diff(dt.date())
 
     ff_time = 0
