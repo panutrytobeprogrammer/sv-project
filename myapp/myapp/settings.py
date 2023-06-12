@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['*']
 
 # CSRF Trust
 
-# CSRF_TRUSTED_ORIGINS = ['https://svproject.panu.site']
+CSRF_TRUSTED_ORIGINS = ['https://sv-project-564g.vercel.app/']
 
 # AUTH_USER_MODEL = 'home.User'
 
