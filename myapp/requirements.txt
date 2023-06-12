@@ -8,6 +8,7 @@ Flask-SQLAlchemy==3.0.3
 itsdangerous==2.1.2
 munch==2.5.0
 munkres==1.1.4
+mysqlclient==2.1.1
 mysql-connector-python==8.0.33
 pandas==1.5.3
 plotly==5.13.1
