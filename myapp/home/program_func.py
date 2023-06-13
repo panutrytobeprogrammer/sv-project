@@ -111,7 +111,7 @@ def query_time_v2(route, dt):
     if datetime.time(h,m,s) < datetime.time(6,0,0) or datetime.time(h,m,s) > datetime.time(21,0,0):
         return {'ff_time':0, 'avg_time':0, 'p95_time':0, 'tti':0}
     time = time[:4]+'0:00'
-    print(dt)
+    # print(dt)
     # dt = pd.to_datetime(dt)
     day = diff(dt.date())
 
