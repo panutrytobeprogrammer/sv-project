@@ -74,10 +74,10 @@ def planning(request):
     elif len(plantime_date) == 0:
         plantime = f'{datetime.datetime.now().date()} {plantime_time}'
     else:
-        plantime = pd.to_datetime(f'{plantime_date} {plantime_time}')
+        plantime = datetime.datetime.strptime(f'{plantime_date} {plantime_time}', '%Y-%m-%d %H:%M')
 
     # query time
-    plantime = pd.to_datetime(plantime)
+    plantime = datetime.datetime.strptime(plantime, '%Y-%m-%d %H:%M')
     time = query_time_v2(route=f'{origin_s}_{destin_s}', dt=plantime)
     ff_time = time['ff_time']
     avg_time = time['avg_time']
@@ -279,10 +279,10 @@ def planningfromrecent(request, plan_id):
     elif len(plantime_date) == 0:
         plantime = f'{datetime.datetime.now().date()} {plantime_time}'
     else:
-        plantime = pd.to_datetime(f'{plantime_date} {plantime_time}')
+        plantime = datetime.datetime.strptime(f'{plantime_date} {plantime_time}', '%Y-%m-%d %H:%M')
 
     # query time
-    plantime = pd.to_datetime(plantime)
+    plantime = datetime.datetime.strptime(plantime, '%Y-%m-%d %H:%M')
     time = query_time_v2(route=f'{origin_s}_{destin_s}', dt=plantime)
     ff_time = time['ff_time']
     avg_time = time['avg_time']

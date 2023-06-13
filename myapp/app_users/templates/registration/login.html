@@ -46,21 +46,22 @@
                 <br>
                 <p class="text-sm text-gray-500">Don't have an account?
                     <a class="text-sm text-[#4b88e3] hover:text-[#47a6ab]" href="{% url 'register' %}">Sign up</a>
+                    <span>or</span>
+                    <button class="text-sm text-[#4b88e3] hover:text-[#47a6ab]" onclick="autoenter()">Guest mode</button>
                 </p>
             </div>
-            <!-- <script>
+            <script>
                 // auto login
                 function autoenter() {
                     var d = new Date().getSeconds()
                     var username = document.getElementById('username')
                     var password = document.getElementById('password')
                     var button = document.getElementById('next')
-                    username.value = 'test'+String(d)
-                    password.value = 'seniorproject123'
+                    username.value = 'guest'
+                    password.value = 'dgnoienvmdefkpwejj0f23328954356uf'
                     button.click();
                 }
-                autoenter();
-            </script> -->
+            </script>
         </div>
     </div>
 </body>
